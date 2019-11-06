@@ -1,0 +1,149 @@
+@import '../node_modules/angular2-toaster/toaster.min.css';
+html {
+  height: 100%;
+}
+
+body {
+  background-color: beige;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
+body .container-wrapper {
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+}
+body .container-wrapper .toast-title {
+  font-weight: normal;
+}
+body .container-wrapper header {
+  background-color: red;
+  height: 2px;
+  overflow: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+body .container-wrapper section {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+  overflow: auto;
+  margin: 0px auto;
+  max-width: 1250px;
+  padding: 25px;
+  background-color: #FFF;
+}
+body .container-wrapper section .upload {
+  float: left;
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  position: relative;
+  background-color: #C3FFEB;
+  border-radius: 5px;
+}
+body .container-wrapper section .upload .html-trained {
+  overflow: hidden;
+  height: 531px;
+  padding: 10px 25px;
+}
+body .container-wrapper section .upload .html-trained__expand {
+  position: absolute;
+  bottom: 17px;
+  left: 48%;
+  cursor: pointer;
+  font-weight: bold;
+}
+body .container-wrapper section .upload .html-trained__expand:hover {
+  color: #12ADC0;
+}
+body .container-wrapper section .upload .html-trained__expand .mat-icon {
+  position: relative;
+  top: 19px;
+  left: -7px;
+  font-size: 50px !important;
+}
+body .container-wrapper section .upload .html-trained__expand .mat-icon:hover {
+  color: #12ADC0;
+}
+body .container-wrapper section .upload .upload__top {
+  padding: 25px;
+  overflow: auto;
+}
+body .container-wrapper section .upload .upload__top .titles {
+  width: 100%;
+}
+body .container-wrapper section .upload .upload__top .titles .titles__title {
+  width: 25%;
+  text-align: center;
+  float: left;
+  color: #666;
+}
+body .container-wrapper section .upload .upload__top .titles .titles__title:first-child {
+  width: 50%;
+}
+body .container-wrapper section .upload .upload__top .models {
+  width: 50%;
+  float: left;
+  margin: auto;
+}
+body .container-wrapper section .upload .upload__top .models .models__group {
+  width: 100%;
+  float: left;
+  padding-top: 10px;
+}
+body .container-wrapper section .upload .upload__top .models .models__group .models__group__btn {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+}
+body .container-wrapper section .upload .upload__top .models .models__group .models__group__btn:hover {
+  color: #12ADC0;
+}
+body .container-wrapper section .upload .upload__top .uploader {
+  width: 25%;
+  float: left;
+  margin: auto;
+}
+body .container-wrapper section .upload .upload__top .uploader label {
+  text-align: center;
+  width: 100%;
+}
+body .container-wrapper section .upload .upload__top .uploader .file-container {
+  overflow: auto;
+  margin: 45px auto auto auto;
+}
+body .container-wrapper section .upload .upload__top .uploader .file-container .file-button {
+  background-color: #12ADC0;
+}
+body .container-wrapper section .upload .upload__top .button {
+  margin-top: 50px;
+}
+body .container-wrapper section .upload .upload__top .score {
+  font-weight: bold;
+  margin-left: 50px;
+}
+body .container-wrapper footer {
+  overflow: auto;
+  background-color: red;
+  height: 2px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/*# sourceMappingURL=styles.css.map */
