@@ -44,10 +44,10 @@ class Repository():
         print(criteria.classifier)
 
         #module_dir      = os.path.dirname(__file__)
-        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\temp\\csvs\\'), criteria.titles[0].title)
+        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[0].title)
         train           = pd.read_csv(file_path_train)
 
-        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\temp\\csvs\\'), criteria.titles[1].title)
+        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[1].title)
         test            = pd.read_csv(file_path_test)
 
         #train ---------------------------------------
@@ -129,7 +129,7 @@ class Repository():
             </body
         </html>""" % (resultText)
 
-        with open('df_style.css', 'r') as myfile:
+        with open('static/df_style.css', 'r') as myfile:
             style = myfile.read()
 
         html = html_string.format(table=train.to_html(classes='mystyle'), style=style)

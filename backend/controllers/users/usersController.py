@@ -80,8 +80,8 @@ def upload():
 
 
     try:
-        train.save(os.path.join(join(dirname(__file__), '..\\..\\temp\\csvs\\'), trainName))
-        test.save(os.path.join(join(dirname(__file__), '..\\..\\temp\\csvs\\'), testName))
+        train.save(os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), trainName))
+        test.save(os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), testName))
         return Response(me.toJSON())
     except:
         return Response({'tt': 'ERROR'})

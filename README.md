@@ -1,4 +1,4 @@
-# Webapp Starter with Flask REST API Backend and MongoDB
+# Webapp Starter with Flask REST API Backend and Angular Frontend
 
 NOTE: There could occur problems running this on windows.
 
@@ -26,11 +26,6 @@ In order to install new packages, add them to the `requirements.txt` file. If yo
 
 ### Frontend development
 
-Only if you prefer developing without using docker.
-
-Run `yarn install` in the frontend directory.
-
-Run `yarn start` in frontend root (will watch files and restart dev-server on port `4200` on change). 
 All calls made to `/api` will be proxied to backend server (default port for backend `8081`), this can be changed in `proxy.conf.json`.
 
 ## Production web backend/frontend
