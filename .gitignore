@@ -15,7 +15,6 @@ tps3_qcontrol/__pycache__
 # compiled output
 /frountend/dist
 /frountend/dist-server
-/frountend/tmp
 /frountend/out-tsc
 
 # dependencies
