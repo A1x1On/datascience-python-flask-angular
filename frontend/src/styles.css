@@ -1,4 +1,13 @@
 @import '../node_modules/angular2-toaster/toaster.min.css';
+@import '~ng-busy/src/style/busy.css';
+.p-upside-20I {
+  padding: 10px 0px !important;
+}
+
+.max-w-100perI {
+  max-width: 100% !important;
+}
+
 html {
   height: 100%;
 }
@@ -6,6 +15,7 @@ html {
 body {
   background-color: beige;
   margin: 0px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 0px;
   height: 100%;
 }
@@ -20,8 +30,8 @@ body .container-wrapper .toast-title {
   font-weight: normal;
 }
 body .container-wrapper header {
-  background-color: red;
-  height: 2px;
+  background-color: #ff4081;
+  height: 3px;
   overflow: auto;
   flex-grow: 0;
   flex-shrink: 0;
@@ -73,77 +83,87 @@ body .container-wrapper section .upload .html-trained__expand .mat-icon:hover {
 }
 body .container-wrapper section .upload .upload__top {
   padding: 25px;
-  overflow: auto;
+  overflow: visible;
 }
-body .container-wrapper section .upload .upload__top .titles {
+body .container-wrapper section .upload .upload__top .titles, body .container-wrapper section .upload .upload__top h3 {
   width: 100%;
+  margin-left: 20px;
+  float: left;
 }
-body .container-wrapper section .upload .upload__top .titles .titles__title {
+body .container-wrapper section .upload .upload__top .titles .titles__title, body .container-wrapper section .upload .upload__top h3 .titles__title {
   width: 25%;
   text-align: center;
   float: left;
   color: #666;
 }
-body .container-wrapper section .upload .upload__top .titles .titles__title:first-child {
-  width: 50%;
+body .container-wrapper section .upload .upload__top .titles .titles__title:first-child, body .container-wrapper section .upload .upload__top h3 .titles__title:first-child {
+  width: 48%;
 }
-body .container-wrapper section .upload .upload__top .models {
-  width: 50%;
+body .container-wrapper section .upload .upload__top .interface {
+  width: 100%;
   float: left;
-  margin: auto;
 }
-body .container-wrapper section .upload .upload__top .models .models__group {
+body .container-wrapper section .upload .upload__top .interface .models {
+  width: 48%;
+  float: left;
+  margin: 0px 0px 0px 20px;
+}
+body .container-wrapper section .upload .upload__top .interface .models .models__group {
   width: 100%;
   float: left;
   padding-top: 10px;
 }
-body .container-wrapper section .upload .upload__top .models .models__group .models__group__btn {
+body .container-wrapper section .upload .upload__top .interface .models .models__group .models__group__btn {
   float: left;
   width: 100%;
   margin-top: 15px;
 }
-body .container-wrapper section .upload .upload__top .models .models__group .models__group__btn:hover {
+body .container-wrapper section .upload .upload__top .interface .models .models__group .models__group__btn:hover {
   color: #12ADC0;
 }
-body .container-wrapper section .upload .upload__top .uploader {
+body .container-wrapper section .upload .upload__top .interface .uploader {
   width: 25%;
   float: left;
   margin: auto;
 }
-body .container-wrapper section .upload .upload__top .uploader label {
+body .container-wrapper section .upload .upload__top .interface .uploader label {
   text-align: center;
   width: 100%;
 }
-body .container-wrapper section .upload .upload__top .uploader .file-container {
-  overflow: auto;
+body .container-wrapper section .upload .upload__top .interface .uploader .file-container {
+  overflow: visible;
   margin: 45px auto auto auto;
 }
-body .container-wrapper section .upload .upload__top .uploader .file-container .file-button {
+body .container-wrapper section .upload .upload__top .interface .uploader .file-container .file-button {
   background-color: #12ADC0;
 }
-body .container-wrapper section .upload .upload__top .button {
-  margin-top: 50px;
+body .container-wrapper section .upload .upload__top .extra {
+  width: 100%;
+  float: left;
+  padding-left: 20px;
+  margin-top: 40px;
 }
-body .container-wrapper section .upload .upload__top .score {
+body .container-wrapper section .upload .upload__top .controls {
+  width: 100%;
+  float: left;
+  padding-left: 20px;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+body .container-wrapper section .upload .upload__top .controls .button:hover {
+  background-color: #ff4081;
+}
+body .container-wrapper section .upload .upload__top .controls .score {
   font-weight: bold;
   margin-left: 50px;
 }
 body .container-wrapper footer {
   overflow: auto;
-  background-color: red;
-  height: 2px;
+  background-color: #ff4081;
+  height: 3px;
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 /*# sourceMappingURL=styles.css.map */

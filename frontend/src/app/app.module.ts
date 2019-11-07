@@ -5,9 +5,10 @@ import { RouterModule                         } from '@angular/router';
 import { BrowserAnimationsModule              } from '@angular/platform-browser/animations';
 import { MatIconModule, MatCardModule,
          MatButtonModule, MatFormFieldModule,
-         MatRadioModule                       } from '@angular/material';
+         MatRadioModule, MatSelectModule      } from '@angular/material';
 import { InputFileConfig, InputFileModule     } from 'ngx-input-file';
 import { ToasterModule                        } from 'angular2-toaster';
+import { NgBusyModule                         } from 'ng-busy';
 
 import { AppComponent                         } from './app.component';
 import { HomeComponent                        } from './home/home.component';
@@ -41,7 +42,9 @@ const config: InputFileConfig = {};
     MatButtonModule,
     MatFormFieldModule,
     MatRadioModule,
+    MatSelectModule,
     MatIconModule,
+    NgBusyModule,
     InputFileModule.forRoot(config)
   ],
   providers: [AccountService, HttpErrorHandlerService, AppGlobal],

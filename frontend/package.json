@@ -28,6 +28,7 @@
     "jquery": "^3.4.1",
     "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.24.0",
+    "ng-busy": "^8.0.0",
     "ngx-input-file": "^8.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
