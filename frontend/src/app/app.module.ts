@@ -5,7 +5,8 @@ import { RouterModule                         } from '@angular/router';
 import { BrowserAnimationsModule              } from '@angular/platform-browser/animations';
 import { MatIconModule, MatCardModule,
          MatButtonModule, MatFormFieldModule,
-         MatRadioModule, MatSelectModule      } from '@angular/material';
+         MatRadioModule, MatSelectModule,
+         MatInputModule                       } from '@angular/material';
 import { InputFileConfig, InputFileModule     } from 'ngx-input-file';
 import { ToasterModule                        } from 'angular2-toaster';
 import { NgBusyModule                         } from 'ng-busy';
@@ -40,6 +41,7 @@ const config: InputFileConfig = {};
     BrowserAnimationsModule,
     MatCardModule,
     MatButtonModule,
+    MatInputModule,
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,

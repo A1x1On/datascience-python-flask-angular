@@ -8,6 +8,17 @@
 .max-w-100perI{
   max-width: 100% !important;
 }
+.w-97perI{
+  width: 97% !important;
+}
+.fs-135{
+  font-size: 13.5px !important;
+}
+.p-0I{
+  padding: 0px !important;
+}
+
+
 
 //---------------
 html{
@@ -67,6 +78,27 @@ body{
           height: 531px;
           padding: 10px 25px;
           //padding: 10px 0px
+        }
+
+        .edit-field{
+          width: 93%;
+          overflow: visible;
+          margin: 0px 25px;
+          padding: 20px;
+
+          textarea{
+            height: 181px;
+          }
+
+          .button{
+            margin-top: 25px;
+            margin-bottom: 5px;
+            background-color: #12ADC0;
+
+            &:hover{
+              background-color: #ff4081;
+            }
+          }
         }
 
         .html-trained__expand{
@@ -136,7 +168,7 @@ body{
                 }
               }
             }
-            .uploader{
+            .train-uploader{
               width: 25%;
               float: left;
               margin: auto;
@@ -155,6 +187,47 @@ body{
                 }
               }
             }
+
+            .test-uploader{
+              width: 25%;
+              float: left;
+              margin: auto;
+
+              .test-uploader__input{
+                label{
+                  text-align: center;
+                  width: 100%;
+                }
+
+                .file-container{
+                  overflow: visible;
+                  margin: 45px auto auto auto;
+                  height: 75px;
+                  padding: 0px;
+
+                  .file-button{
+                    background-color: #12ADC0;
+                  }
+                }
+
+              }
+
+              .test-uploader__manual{
+                width: 160px;
+                background-color: #12ADC0;
+                margin: 10px auto auto auto;
+                border-radius: 5px;
+                height: 51px;
+                padding: 24px 0px 0px 0px;
+                cursor: pointer;
+
+                .edit{
+                  margin: auto;
+                  display: block;
+                }
+              }
+
+            }
           }
 
           .extra{
@@ -172,6 +245,8 @@ body{
             margin-bottom: 50px;
 
             .button{
+              background-color: #1CAABA;
+
               &:hover{
                 background-color: #ff4081;
               }
@@ -182,9 +257,6 @@ body{
               margin-left: 50px;
             }
           }
-
-
-
         }
       }
     }

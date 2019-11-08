@@ -31,11 +31,20 @@ class Repository():
         return 'succs'
 
     def getRiskCompPrediction(criteria):
+
+
+        print(criteria)
         file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[0].title)
         train           = pd.read_csv(file_path_train, delimiter=";")
 
         file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[1].title)
         test            = pd.read_csv(file_path_test, delimiter=";")
+
+
+        print('train')
+        print(train.head())
+        print('test')
+        print(test.to_string())
 
         le              = LabelEncoder() # convert string to numbers
         train['Target'] = le.fit_transform(train['Target'])
@@ -71,6 +80,8 @@ class Repository():
         test           = pd.concat([test,bin], axis = 1)
         test.drop('binaryrisk',axis = 1, inplace = True)
 
+        print(test.head())
+
         test['R5']     = test[['R5']].apply(impute_r5, axis = 1)
         test['R3']     = test[['R3']].apply(replaceComma, axis = 1)
         test['R4']     = test[['R4']].apply(replaceComma, axis = 1)
@@ -98,13 +109,15 @@ class Repository():
         y_train        = train['Target']
         X_test         = test
 
-        #print(X_train.head())
-        #print(y_train.head())
-        #print(X_test.head())
+        print('fffffffffffffffff')
+        print(X_train.head())
+        print(y_train.head())
+        print(X_test.head())
 
         rfc            = getClassifier(criteria.classifier)
 
         rfc.fit(X_train, y_train) # learned by train data and train target
+
         predictions    = rfc.predict(X_test) # got prediction
         score          = rfc.score(X_train, y_train)
 

@@ -9,7 +9,7 @@
     <div class="titles">
       <div class="titles__title">Learning methods used for classification</div>
       <div class="titles__title">Select or Drop 'tran.csv' file</div>
-      <div class="titles__title">Select or Drop 'test.csv' file (optional)</div>
+      <div class="titles__title">Select or Drop 'test.csv' file / Fill manually</div>
     </div>
 
     <div class="interface">
@@ -23,8 +23,19 @@
           <mat-radio-button class="models__group__btn" [value]="6">Soft Voting/Majority Rule classifier for unfitted estimators (VotingClassifier)</mat-radio-button>
         </mat-radio-group>
       </div>
-      <input-file [(ngModel)]="files.train" class="uploader"></input-file>
-      <input-file [(ngModel)]="files.test"  class="uploader"></input-file>
+
+      <input-file [(ngModel)]="files.train" class="train-uploader"></input-file>
+
+      <div class="test-uploader">
+        <input-file [(ngModel)]="files.test"  class="test-uploader__input"></input-file>
+
+        <div class="test-uploader__manual" (click)="fillManually()" [style.background]="this.edit ? '#FD4080' : '#1CAABA'">
+          <mat-icon class="edit">edit</mat-icon>
+        </div>
+
+      </div>
+
+
     </div>
 
     <div class="extra">
@@ -43,6 +54,13 @@
       <span *ngIf="score != null" class="score">Score: {{score}}</span>
     </div>
   </div>
+
+
+  <mat-form-field class="edit-field" *ngIf="edit">
+    <textarea matInput [(ngModel)]="manualTest" placeholder="Leave test data for current pattern (csv format: value1;value2 etc)"></textarea>
+    <button mat-raised-button type="button" class="button" (click)="expandManual()">Expand field</button>
+  </mat-form-field>
+
 
   <div [innerHtml]=trained  class="html-trained"></div>
   <div class="html-trained__expand" *ngIf="trained" (click)="expandGrid()">Expand <mat-icon>expand_more</mat-icon></div>

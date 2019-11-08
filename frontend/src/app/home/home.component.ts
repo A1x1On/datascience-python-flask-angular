@@ -2,6 +2,7 @@ import { Component              } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from  '@angular/forms';
 import { DomSanitizer           } from '@angular/platform-browser';
 import { Subscription           } from 'rxjs';
+import * as _                     from 'underscore';
 
 
 import { AccountService         } from '../services/account.service';
@@ -28,6 +29,9 @@ export class HomeComponent {
   files         : any;
   classifier    : number;
   score         : any;
+  edit          : boolean;
+  manualExpend  : boolean;
+  manualTest    : string;
   pattern       : string;
   busy          : Subscription;
   patternValues : Pattern[] = [
@@ -39,11 +43,14 @@ export class HomeComponent {
               private app            : AppGlobal,
               private sanitizer      : DomSanitizer,
               private toasterService : ToasterService) {
-    this.trained    = '';
-    this.classifier = 1;
-    this.score      = null;
-    this.pattern    = 'titanic';
-    this.files      = {
+    this.trained      = '';
+    this.classifier   = 1;
+    this.edit         = false;
+    this.manualExpend = false;
+    this.manualTest   = '';
+    this.score        = null;
+    this.pattern      = 'titanic';
+    this.files        = {
       train : null,
       test  : null
     };
@@ -58,10 +65,47 @@ export class HomeComponent {
     // });
   }
 
+  fillManually(){
+    this.edit = !this.edit;
+    if(!this.edit)
+      this.manualTest = '';
+  }
+
+  expandManual(){
+    this.manualExpend = !this.manualExpend;
+    if(this.manualExpend){
+      $('section')             .addClass('max-w-100perI');
+      $('.edit-field textarea').addClass('fs-135');
+      $('.edit-field')         .addClass('w-97perI');
+      $('.edit-field')         .addClass('p-0I');
+
+    }else{
+      $('section')             .removeClass('max-w-100perI');
+      $('.edit-field textarea').removeClass('fs-135');
+      $('.edit-field')         .removeClass('w-97perI');
+      $('.edit-field')         .removeClass('p-0I');
+    }
+  }
 
   submission() {
     const formData = new FormData();
-    console.log('test ', this.app.config.toaster);
+    let testCSV    = 'R3;R4;R5;L1;L2;P1;A2;A4;1/A5;A6;F1;F2;F3;F4;R6;L3;1/A1;1/A3;1/F8;F11;P2;binaryrisk\n';
+
+    if(this.manualTest){
+      let i       = 21;
+      this.manualTest.trim().replace("'", '').split(/\n|;| /g).forEach((val, key) => {
+        if(i == key){
+          testCSV = testCSV + val + '\r';
+          i       = i + 22;
+        }else{
+          testCSV = testCSV + val + ';';
+        }
+      });
+
+      testCSV = testCSV.slice(0,-1);
+      //-0,508101417;0,228602326;0,183020413;0,481158687;1,50411276;4,30358762;0,207788298;2,13172161;-1,471923379;-1,47191079;0,446974239;-1,12626183;0,0809678455;2,98762455;0,484131209;0,0172192235;0,617430453;0,0643489114;0,27437091;0,386199238;denial
+    }
+
 
     if(this.files.train[0] == undefined){
       this.toasterService.pop('info', 'Please, select "train.csv" first/at least');
@@ -74,7 +118,10 @@ export class HomeComponent {
     if(this.files.test[0] != undefined){
       let test  = this.files.test[0];
       formData.append('test', test.file, test.name);
+    }else if(testCSV){
+      formData.append('test', new Blob([testCSV], {type: "text/plain"}), 'test.csv');
     }
+
 
     this.busy = this.accountService.upload(formData).subscribe(
       (res) => {
