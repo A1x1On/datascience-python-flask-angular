@@ -23,6 +23,7 @@ export class AccountService {
 
   public upload(data) {
 
+      console.log('datadatadata ', data);
     return this.http.post<any>('/api/upload', data).pipe(
       catchError(err => {
         return this.httpError.handleError(err, 'getTransactions', {})

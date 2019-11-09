@@ -1,15 +1,46 @@
 {
   "extends": "tslint:recommended",
   "rules": {
-    "import-spacing": true,
+    "typedef-whitespace": {
+      "options": [{
+        "parameter": "nospace"
+      }, {
+        "parameter": "nospace"
+      }]
+    },
+    "whitespace": {
+      "options": [
+        "check-type"
+      ]
+    },
+    "import-spacing": false,
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
       "severity": "warning"
     },
+    "linterOptions": {
+      "exclude": [
+        "bin",
+        "src/*.js",
+        "src/*.ts",
+        "*.ts",
+        "/../*.ts",
+        "node_modules",
+        "*.d.ts",
+        "../*.d.ts",
+        "./src/*.d.ts",
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "./**/*.d.ts",
+        "./*.d.ts"
+      ]
+    },
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
+    "max-line-length": false,
+    "typedef-whitespace": false,
     "directive-selector": [
       true,
       "attribute",
@@ -28,10 +59,6 @@
     ],
     "interface-name": false,
     "max-classes-per-file": false,
-    "max-line-length": [
-      true,
-      140
-    ],
     "member-access": false,
     "member-ordering": [
       true,

@@ -19,6 +19,32 @@ import os
 
 pl.use('Agg')
 
+def string2Number(cols, revert):
+    risk = cols[0]
+
+    if revert == 1:
+        if risk == 1:
+            return 'veryhighrisk'
+        elif risk == 2:
+            return 'highrisk'
+        elif risk == 3:
+            return 'theaveragerisk'
+        elif risk == 4:
+            return 'lowrisk'
+        elif risk == 5:
+            return 'verylowrisk'
+    else:
+        if risk == 'veryhighrisk':
+            return 1
+        elif risk == 'highrisk':
+            return 2
+        elif risk == 'theaveragerisk':
+            return 3
+        elif risk == 'lowrisk':
+            return 4
+        elif risk == 'verylowrisk':
+            return 5
+
 class Repository():
     def get(criteria):
         l1=criteria.split(',')
@@ -31,23 +57,18 @@ class Repository():
         return 'succs'
 
     def getRiskCompPrediction(criteria):
-
-
-        print(criteria)
-        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[0].title)
+        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
         train           = pd.read_csv(file_path_train, delimiter=";")
 
-        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[1].title)
+        file_path_test  = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[1].title)
         test            = pd.read_csv(file_path_test, delimiter=";")
 
+        #tr = pd.DataFrame(train)
+        #print(tr.Target.value_counts())
+        #le              = LabelEncoder() # convert string to numbers
+        #train['Target'] = le.fit_transform(train['Target'])
 
-        print('train')
-        print(train.head())
-        print('test')
-        print(test.to_string())
-
-        le              = LabelEncoder() # convert string to numbers
-        train['Target'] = le.fit_transform(train['Target'])
+        train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
 
         bin             = pd.get_dummies(train['binaryrisk'], drop_first = True)
         train           = pd.concat([train,bin], axis = 1)
@@ -80,8 +101,6 @@ class Repository():
         test           = pd.concat([test,bin], axis = 1)
         test.drop('binaryrisk',axis = 1, inplace = True)
 
-        print(test.head())
-
         test['R5']     = test[['R5']].apply(impute_r5, axis = 1)
         test['R3']     = test[['R3']].apply(replaceComma, axis = 1)
         test['R4']     = test[['R4']].apply(replaceComma, axis = 1)
@@ -109,34 +128,30 @@ class Repository():
         y_train        = train['Target']
         X_test         = test
 
-        print('fffffffffffffffff')
-        print(X_train.head())
-        print(y_train.head())
-        print(X_test.head())
-
         rfc            = getClassifier(criteria.classifier)
 
         rfc.fit(X_train, y_train) # learned by train data and train target
 
-        predictions    = rfc.predict(X_test) # got prediction
-        score          = rfc.score(X_train, y_train)
+        predictions           = rfc.predict(X_test) # got prediction
+        score                 = rfc.score(X_train, y_train)
 
-        # 2 - avarage, 0 - high risk 1 - low, 3 - veri high, 4 very low
-        p2                  = pd.DataFrame(X_test['P2'])
-        predictions         = pd.DataFrame(predictions)
-        predictions.columns = ['target']
+        p2                    = pd.DataFrame(X_test['P2'])
+        predictions           = pd.DataFrame(predictions)
+        predictions.columns   = ['Target']
 
-        risk                = pd.concat([p2,predictions], axis = 1)
-        risk                = risk.sort_values(by=['target'])
+        predictions['Target'] = predictions[['Target']].apply(string2Number, revert=1, axis = 1) # replace numer risk to string
+
+        risk                  = pd.concat([p2,predictions], axis = 1)
+        risk                  = risk.sort_values(by=['Target'])
 
         #risk.to_csv('test_predictions.csv', index = False)
         return '{"result": 9, "score": ' + str(score) + '}'+ getHTML(risk)
 
     def getTitanicPrediction(criteria):
-        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[0].title)
+        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
         train           = pd.read_csv(file_path_train)
 
-        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), criteria.titles[1].title)
+        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[1].title)
         test            = pd.read_csv(file_path_test)
 
         #train ---------------------------------------
@@ -183,6 +198,7 @@ class Repository():
 
         predictions = rfc.predict(X_test)
         score       = rfc.score(X_train, y_train)
+
         print(score)
 
         predictions = pd.DataFrame(predictions)

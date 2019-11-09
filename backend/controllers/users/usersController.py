@@ -20,8 +20,14 @@ def getAvg():
 
 @users.route('/upload', methods=['POST'])
 def upload():
+
+    print(request.files)
     train                    = request.files['train']
     test                     = request.files['test']
+    print(train)
+    print(test)
+
+
     rand                     = str(randrange(1000))
     trainName                = rand + train.filename
     testName                 = rand + test.filename
@@ -31,11 +37,11 @@ def upload():
     criteria.titles[1].title = testName
 
     try:
-        train.save(os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), trainName))
-        test .save(os.path.join(join(dirname(__file__), '..\\..\\static\\csvs\\'), testName))
+        train.save(os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), trainName))
+        test .save(os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), testName))
         return Response(criteria.toJSON())
     except:
-        return Response({'tt': 'ERROR'})
+        return Response({'ERROR': 'CAN\'t UPLOAD'})
 
 @users.route('/getSubResults', methods=['POST'])
 def getSubResults():
