@@ -10,6 +10,15 @@ from   sklearn.ensemble        import AdaBoostClassifier
 from   sklearn.ensemble        import VotingClassifier
 from   sklearn.model_selection import GridSearchCV
 
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
+
+
+
+
+
 import numpy                   as np
 import matplotlib              as pl
 import matplotlib.pyplot       as plt
@@ -22,27 +31,28 @@ pl.use('Agg')
 def string2Number(cols, revert):
     risk = cols[0]
 
+
     if revert == 1:
         if risk == 1:
-            return 'veryhighrisk'
+            return 'very high risk'
         elif risk == 2:
-            return 'highrisk'
+            return 'high risk'
         elif risk == 3:
-            return 'theaveragerisk'
+            return 'the average risk'
         elif risk == 4:
-            return 'lowrisk'
+            return 'low risk'
         elif risk == 5:
-            return 'verylowrisk'
+            return 'very low risk'
     else:
-        if risk == 'veryhighrisk':
+        if risk == 'very high risk':
             return 1
-        elif risk == 'highrisk':
+        elif risk == 'high risk':
             return 2
-        elif risk == 'theaveragerisk':
+        elif risk == 'the average risk':
             return 3
-        elif risk == 'lowrisk':
+        elif risk == 'low risk':
             return 4
-        elif risk == 'verylowrisk':
+        elif risk == 'very low risk':
             return 5
 
 class Repository():
@@ -67,6 +77,9 @@ class Repository():
         #print(tr.Target.value_counts())
         #le              = LabelEncoder() # convert string to numbers
         #train['Target'] = le.fit_transform(train['Target'])
+
+        print(train.head())
+
 
         train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
         test['Target']  = test[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
@@ -132,31 +145,40 @@ class Repository():
         y_test         = test['Target']
 
 
-
+        print('-------y 1')
+        print(X_train.head())
+        print('-------2 ')
+        print(y_train.head())
 
         rfc            = getClassifier(criteria.classifier)
-
         rfc.fit(X_train, y_train) # learned by train data and train target
 
         predictions           = rfc.predict(X_test) # got prediction
-        score                 = rfc.score(X_train, y_train)
-
         p2                    = pd.DataFrame(X_test['P2'])
         predictions           = pd.DataFrame(predictions)
 
+        score            = accuracy_score(y_test, predictions)
+        print('F1')
+        _f1_score        = f1_score(y_test, predictions, average='weighted')
+        print('RECALL')
+        _recall_score    = recall_score(y_test, predictions, average='weighted')
+        print('PERCISION')
+        _precision_score = precision_score(y_test, predictions, average='weighted')
 
-        print(X_test.head())
-        print(y_test.head())
-        print(predictions.head())
 
 
-        score                 = rfc.score(y_test, predictions)
 
+        print('-------SCORES--------')
+        print('accuracy_score_', score)
+        print('f1_score_______', _f1_score)
+        print('recall_score___', _recall_score)
+        print('precision_score', _precision_score)
+
+
+        #print(rfc.score(y_test, predictions))
 
         predictions.columns   = ['Target']
-
         predictions['Target'] = predictions[['Target']].apply(string2Number, revert=1, axis = 1) # replace numer risk to string
-
         risk                  = pd.concat([p2,predictions], axis = 1)
         risk                  = risk.sort_values(by=['Target'])
 
