@@ -69,6 +69,7 @@ class Repository():
         #train['Target'] = le.fit_transform(train['Target'])
 
         train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
+        test['Target']  = test[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
 
         bin             = pd.get_dummies(train['binaryrisk'], drop_first = True)
         train           = pd.concat([train,bin], axis = 1)
@@ -126,7 +127,12 @@ class Repository():
 
         X_train        = train.drop('Target', axis = 1)
         y_train        = train['Target']
-        X_test         = test
+
+        X_test         = test.drop('Target', axis = 1)
+        y_test         = test['Target']
+
+
+
 
         rfc            = getClassifier(criteria.classifier)
 
@@ -137,6 +143,16 @@ class Repository():
 
         p2                    = pd.DataFrame(X_test['P2'])
         predictions           = pd.DataFrame(predictions)
+
+
+        print(X_test.head())
+        print(y_test.head())
+        print(predictions.head())
+
+
+        score                 = rfc.score(y_test, predictions)
+
+
         predictions.columns   = ['Target']
 
         predictions['Target'] = predictions[['Target']].apply(string2Number, revert=1, axis = 1) # replace numer risk to string
