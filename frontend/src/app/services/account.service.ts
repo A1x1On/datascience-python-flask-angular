@@ -22,8 +22,6 @@ export class AccountService {
 
 
   public upload(data) {
-
-      console.log('datadatadata ', data);
     return this.http.post<any>('/api/upload', data).pipe(
       catchError(err => {
         return this.httpError.handleError(err, 'getTransactions', {})
@@ -32,7 +30,6 @@ export class AccountService {
   }
 
   public getSubResults(data) {
-
     return this.http.post<any>('/api/getSubResults', data, {responseType: 'text' as 'json'}).pipe(
       catchError(err => {
         return this.httpError.handleError(err, 'getTransactions', {})
@@ -53,9 +50,6 @@ export class AccountService {
 
 
     const httpOptions = new HttpHeaders(header);
-
-
-
 
     return this.http.get<any>(`/api/board`, {headers : httpOptions})
 

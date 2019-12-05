@@ -4,11 +4,11 @@
 
 <div class="upload">
   <div class="upload__top" [ngBusy]="{busy: busy}">
-    <h3>Machine learning prediction </h3>
+    <h3 class="title">Machine learning prediction </h3>
 
     <div class="titles">
       <div class="titles__title">Learning methods used for classification</div>
-      <div class="titles__title">Select or Drop 'tran.csv' file</div>
+<!--      <div class="titles__title">Select or Drop 'tran.csv' file</div>-->
       <div class="titles__title">Select or Drop 'test.csv' file / Fill manually</div>
     </div>
 
@@ -24,12 +24,12 @@
         </mat-radio-group>
       </div>
 
-      <input-file [(ngModel)]="files.train" class="train-uploader"></input-file>
+<!--      <input-file [(ngModel)]="files.train" class="train-uploader"></input-file>-->
 
       <div class="test-uploader">
         <input-file [(ngModel)]="files.test"  class="test-uploader__input"></input-file>
 
-        <div class="test-uploader__manual" (click)="fillManually()" [style.background]="this.edit ? '#FD4080' : '#1CAABA'">
+        <div class="test-uploader__manual" (click)="fillManually()" [style.background]="this.isEdit ? '#FD4080' : '#1CAABA'">
           <mat-icon class="edit">edit</mat-icon>
         </div>
 
@@ -48,21 +48,155 @@
           </mat-select>
       </mat-form-field>
     </div>
+  </div>
 
-    <div class="controls">
-      <button mat-raised-button type="button" class="button" (click)="submission()">Submission</button>
-      <span *ngIf="score != null" class="score">Score: {{score}}</span>
+  <div class="upload__editing" *ngIf="isEdit">
+    <div class="switcher">
+      <button mat-raised-button type="button" class="switcher__button switcher_raw"    (click)="switcher(2)">Raw</button>
+      <button mat-raised-button type="button" class="switcher__button switcher_manual" (click)="switcher(1)">Manual</button>
+    </div>
+    <div class="asFields" *ngIf="isManual">
+      <h3 class="asFields__title">Enter require data into the fields</h3>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R3"          type = "number" [(ngModel)]="test.r3" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R4"          type = "number" [(ngModel)]="test.r4" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R5"          type = "number" [(ngModel)]="test.r5" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L1"          type = "number" [(ngModel)]="test.l1" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L2"          type = "number" [(ngModel)]="test.l2" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="P1"          type = "number" [(ngModel)]="test.p1" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A2"          type = "number" [(ngModel)]="test.a2" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A4"          type = "number" [(ngModel)]="test.a4" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A5"        type = "number" [(ngModel)]="test.a1a5" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A6"          type = "number" [(ngModel)]="test.a6" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F1"          type = "number" [(ngModel)]="test.f1" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F2"          type = "number" [(ngModel)]="test.f2" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F3"          type = "number" [(ngModel)]="test.f3" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F4"          type = "number" [(ngModel)]="test.f4" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R6"          type = "number" [(ngModel)]="test.r6" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L3"          type = "number" [(ngModel)]="test.l3" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A1"        type = "number" [(ngModel)]="test.a1a1" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A3"        type = "number" [(ngModel)]="test.a1a3" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/F8"        type = "number" [(ngModel)]="test.f1f8" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F11"         type = "number" [(ngModel)]="test.f11" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="P2"          type = "number" [(ngModel)]="test.p2" /></mat-form-field>
+      <mat-form-field class="asFields__input asFields__select">
+        <mat-label>Binary Risk</mat-label>
+        <mat-select [(ngModel)]="test.risk">
+          <mat-option *ngFor="let p of riskValues" [value]="p.value">
+            {{p.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="asRaw" *ngIf="isRaw">
+      <h3 class="asFields__title">Enter require data formatted as 'csv' extension</h3>
+      <mat-form-field class="asRaw__textarea">
+        <textarea matInput [(ngModel)]="manualTest" placeholder="Leave test data for current pattern (csv format: value1;value2 etc)"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="asBtn">
+      <button mat-raised-button type="button" class="asBtn__addBtn"    *ngIf = "isManual && !testEditing" (click)="addTestRow()">Add</button>
+      <button mat-raised-button type="button" class="asBtn__addBtn"    *ngIf = "isManual && testEditing"  (click)="editTestRow()">Edit</button>
+      <button mat-raised-button type="button" class="asBtn__reset" *ngIf = "isManual"                 (click)="resetTest()">Reset</button>
+    </div>
+
+    <div class="asTable" *ngIf="isManual && tests.length">
+      <table class="asTable__table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>R3</th>
+            <th>R4</th>
+            <th>R5</th>
+            <th>L1</th>
+            <th>L2</th>
+            <th>P1</th>
+            <th>A2</th>
+            <th>A4</th>
+            <th>1/A5</th>
+            <th>A6</th>
+            <th>F1</th>
+            <th>F2</th>
+            <th>F3</th>
+            <th>F4</th>
+            <th>R6</th>
+            <th>L3</th>
+            <th>1/A1</th>
+            <th>1/A3</th>
+            <th>1/F8</th>
+            <th>F11</th>
+            <th>P2</th>
+            <th>Binary Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tests" (click)="selectTest(t, $event)">
+            <td><mat-icon (click)="remove(t)">delete</mat-icon></td>
+            <td>{{!t.r3   ? 0  : t.r3  }}</td>
+            <td>{{!t.r4   ? 0  : t.r4  }}</td>
+            <td>{{!t.r5   ? 0  : t.r5  }}</td>
+            <td>{{!t.l1   ? 0  : t.l1  }}</td>
+            <td>{{!t.l2   ? 0  : t.l2  }}</td>
+            <td>{{!t.p1   ? 0  : t.p1  }}</td>
+            <td>{{!t.a2   ? 0  : t.a2  }}</td>
+            <td>{{!t.a4   ? 0  : t.a4  }}</td>
+            <td>{{!t.a1a5 ? 0  : t.a1a5}}</td>
+            <td>{{!t.a6   ? 0  : t.a6  }}</td>
+            <td>{{!t.f1   ? 0  : t.f1  }}</td>
+            <td>{{!t.f2   ? 0  : t.f2  }}</td>
+            <td>{{!t.f3   ? 0  : t.f3  }}</td>
+            <td>{{!t.f4   ? 0  : t.f4  }}</td>
+            <td>{{!t.r6   ? 0  : t.r6  }}</td>
+            <td>{{!t.l3   ? 0  : t.l3  }}</td>
+            <td>{{!t.a1a1 ? 0  : t.a1a1}}</td>
+            <td>{{!t.a1a3 ? 0  : t.a1a3}}</td>
+            <td>{{!t.f1f8 ? 0  : t.f1f8}}</td>
+            <td>{{!t.f11  ? 0  : t.f11 }}</td>
+            <td>{{!t.p2   ? 0  : t.p2  }}</td>
+            <td>{{!t.risk ? '' : t.risk}}</td>
+          </tr>
+
+          <tr style="opacity: 0">
+            <td>-0</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>-0.0616041081</td>
+            <td>ssdf</td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 
 
-  <mat-form-field class="edit-field" *ngIf="edit">
-    <textarea matInput [(ngModel)]="manualTest" placeholder="Leave test data for current pattern (csv format: value1;value2 etc)"></textarea>
-    <button mat-raised-button type="button" class="button" (click)="expandManual()">Expand field</button>
-  </mat-form-field>
+  <div class="upload__controls">
+    <button mat-raised-button type="button" class="button" (click)="submission()">Submission</button>
+    <button mat-raised-button type="button" class="expandBtn" (click)="expandManual()">Expand Page</button>
+    <span *ngIf="score != null" class="score">Score: {{score}}</span>
+  </div>
 
 
-  <div [innerHtml]=trained  class="html-trained"></div>
+  <div [innerHtml]=trained  class="upload__htmlTrained"></div>
   <div class="html-trained__expand" *ngIf="trained" (click)="expandGrid()">Expand <mat-icon>expand_more</mat-icon></div>
 
 </div>

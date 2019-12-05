@@ -22,22 +22,16 @@ def getAvg():
 def upload():
 
     print(request.files)
-    train                    = request.files['train']
     test                     = request.files['test']
-    print(train)
     print(test)
 
-
     rand                     = str(randrange(1000))
-    trainName                = rand + train.filename
     testName                 = rand + test.filename
     criteria                 = Object()
-    criteria.titles          = [Object(), Object()]
-    criteria.titles[0].title = trainName
-    criteria.titles[1].title = testName
+    criteria.titles          = [Object()]
+    criteria.titles[0].title = testName
 
     try:
-        train.save(os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), trainName))
         test .save(os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), testName))
         return Response(criteria.toJSON())
     except:
@@ -46,8 +40,11 @@ def upload():
 @users.route('/getSubResults', methods=['POST'])
 def getSubResults():
     criteria = json.loads(request.data.decode('utf-8'), object_hook=CSVData)
+
+    print('getSubResults!!!')
+    print(criteria)
     if criteria.pattern == 'titanic':
-        return Response(Repository.getTitanicPrediction(criteria))
+        return Response('TITANIC')
     elif criteria.pattern == 'risk-company':
         return Response(Repository.getRiskCompPrediction(criteria))
     else:

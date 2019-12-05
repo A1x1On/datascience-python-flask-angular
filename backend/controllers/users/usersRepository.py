@@ -15,9 +15,8 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import precision_score
 
-
-
-
+import json
+from flask            import Flask, Blueprint, jsonify, request, Response, send_from_directory, send_file
 
 import numpy                   as np
 import matplotlib              as pl
@@ -30,7 +29,6 @@ pl.use('Agg')
 
 def string2Number(cols, revert):
     risk = cols[0]
-
 
     if revert == 1:
         if risk == 1:
@@ -67,10 +65,18 @@ class Repository():
         return 'succs'
 
     def getRiskCompPrediction(criteria):
-        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
+
+        print('-------------------------')
+        print(criteria)
+
+        data=json.loads(request.data.decode('utf-8'))
+        print(data)
+
+
+        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), 'COMPANIES_TRAIN.csv')
         train           = pd.read_csv(file_path_train, delimiter=";")
 
-        file_path_test  = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[1].title)
+        file_path_test  = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
         test            = pd.read_csv(file_path_test, delimiter=";")
 
         #tr = pd.DataFrame(train)
@@ -80,9 +86,11 @@ class Repository():
 
         print(train.head())
 
+        print(test.head())
+
 
         train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
-        test['Target']  = test[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
+        #test['Target']  = test[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
 
         bin             = pd.get_dummies(train['binaryrisk'], drop_first = True)
         train           = pd.concat([train,bin], axis = 1)
@@ -141,8 +149,13 @@ class Repository():
         X_train        = train.drop('Target', axis = 1)
         y_train        = train['Target']
 
-        X_test         = test.drop('Target', axis = 1)
-        y_test         = test['Target']
+        #X_test         = test.drop('Target', axis = 1)
+        #y_test         = test['Target']
+
+
+        X_train        = train.drop('Target', axis = 1)
+        y_train        = train['Target']
+        X_test         = test
 
 
         print('-------y 1')
@@ -154,96 +167,59 @@ class Repository():
         rfc.fit(X_train, y_train) # learned by train data and train target
 
         predictions           = rfc.predict(X_test) # got prediction
-        p2                    = pd.DataFrame(X_test['P2'])
+        R3                    = pd.DataFrame(X_test['R3'])
+        R4                    = pd.DataFrame(X_test['R4'])
+        R5                    = pd.DataFrame(X_test['R5'])
+        L1                    = pd.DataFrame(X_test['L1'])
+        L2                    = pd.DataFrame(X_test['L2'])
+        P1                    = pd.DataFrame(X_test['P1'])
+        A2                    = pd.DataFrame(X_test['A2'])
+        A4                    = pd.DataFrame(X_test['A4'])
+        A5                    = pd.DataFrame(X_test['1/A5'])
+        A6                    = pd.DataFrame(X_test['A6'])
+        F1                    = pd.DataFrame(X_test['F1'])
+        F2                    = pd.DataFrame(X_test['F2'])
+        F3                    = pd.DataFrame(X_test['F3'])
+        F4                    = pd.DataFrame(X_test['F4'])
+        R6                    = pd.DataFrame(X_test['R6'])
+        L3                    = pd.DataFrame(X_test['L3'])
+        A1                    = pd.DataFrame(X_test['1/A1'])
+        A3                    = pd.DataFrame(X_test['1/A3'])
+        F8                    = pd.DataFrame(X_test['1/F8'])
+        Ff                    = pd.DataFrame(X_test['F11'])
+        P2                    = pd.DataFrame(X_test['P2'])
+
         predictions           = pd.DataFrame(predictions)
 
-        score            = accuracy_score(y_test, predictions)
-        print('F1')
-        _f1_score        = f1_score(y_test, predictions, average='weighted')
-        print('RECALL')
-        _recall_score    = recall_score(y_test, predictions, average='weighted')
-        print('PERCISION')
-        _precision_score = precision_score(y_test, predictions, average='weighted')
+        score                 = rfc.score(X_train, y_train)
 
+        #score            = accuracy_score(y_test, predictions)
+        #print('F1')
+        #_f1_score        = f1_score(y_test, predictions, average='weighted')
+        #print('RECALL')
+        #_recall_score    = recall_score(y_test, predictions, average='weighted')
+        #print('PERCISION')
+        #_precision_score = precision_score(y_test, predictions, average='weighted')
 
-
-
-        print('-------SCORES--------')
-        print('accuracy_score_', score)
-        print('f1_score_______', _f1_score)
-        print('recall_score___', _recall_score)
-        print('precision_score', _precision_score)
+        #print('-------SCORES--------')
+        #print('accuracy_score_', score)
+        #print('f1_score_______', _f1_score)
+        #print('recall_score___', _recall_score)
+        #print('precision_score', _precision_score)
 
 
         #print(rfc.score(y_test, predictions))
 
         predictions.columns   = ['Target']
         predictions['Target'] = predictions[['Target']].apply(string2Number, revert=1, axis = 1) # replace numer risk to string
-        risk                  = pd.concat([p2,predictions], axis = 1)
+
+        risk                  = pd.concat([R3,R4,R5,L1,L2,P1,A2,A4,A5,A6,F1,F2,F3,F4,R6,L3,A1,A3,F8,Ff,P2,predictions], axis = 1)
+
+
         risk                  = risk.sort_values(by=['Target'])
 
         #risk.to_csv('test_predictions.csv', index = False)
         return '{"result": 9, "score": ' + str(score) + '}'+ getHTML(risk)
-
-    def getTitanicPrediction(criteria):
-        file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
-        train           = pd.read_csv(file_path_train)
-
-        file_path_test = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[1].title)
-        test            = pd.read_csv(file_path_test)
-
-        #train ---------------------------------------
-        train.drop(['PassengerId','Name','Ticket'], axis = 1, inplace = True)
-
-        sex = pd.get_dummies(train['Sex'], drop_first = True)
-        train = pd.concat([train,sex], axis = 1)
-        train.drop('Sex',axis = 1, inplace = True)
-
-        Embarked = pd.get_dummies(train['Embarked'])
-        train = pd.concat([train,Embarked], axis = 1)
-        train.drop('Embarked',axis = 1,inplace = True)
-        train.drop('Cabin', axis = 1, inplace = True)
-
-        train['Age']  = train[['Age','Pclass']].apply(impute_age, axis = 1)
-        train['Fare'] = train[['Fare','Pclass']].apply(impute_fare, axis = 1)
-
-        #test --------------------------------
-        PassengerId = pd.DataFrame(test['PassengerId'])
-        test.drop(['PassengerId','Name','Ticket'], axis = 1, inplace = True)
-
-        sex = pd.get_dummies(test['Sex'], drop_first = True)
-        test = pd.concat([test,sex], axis = 1)
-        test.drop('Sex',axis = 1, inplace = True)
-        test.drop('Cabin', axis = 1, inplace = True)
-
-        Embarked = pd.get_dummies(test['Embarked'])
-        test = pd.concat([test,Embarked], axis = 1)
-        test.drop('Embarked',axis = 1,inplace = True)
-
-        test['Age']  = test[['Age','Pclass']].apply(impute_age, axis = 1)
-        test['Fare'] = test[['Fare','Pclass']].apply(impute_fare, axis = 1)
-
-        # learning
-        X_train     = train.drop('Survived', axis = 1)
-        y_train     = train['Survived']
-        X_test      = test
-
-        #print(X_train.head())
-        #print(X_test.head())
-
-        rfc         = getClassifier(criteria.classifier)
-        rfc.fit(X_train, y_train)
-
-        predictions = rfc.predict(X_test)
-        score       = rfc.score(X_train, y_train)
-
-        print(score)
-
-        predictions = pd.DataFrame(predictions)
-        titanic     = pd.concat([PassengerId,predictions], axis = 1)
-        #titanic.to_csv('Improved_predictions.csv', index = False)
-
-        return '{"result": 9, "score": ' + str(score) + '}'+ getHTML(titanic)
 
 # AUX ------------------------------------
 def getHTML(risk):

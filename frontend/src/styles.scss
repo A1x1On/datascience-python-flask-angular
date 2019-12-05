@@ -18,6 +18,29 @@
   padding: 0px !important;
 }
 
+@mixin btn-indicate(){
+  background-color: #1CAABA;
+
+  &:hover{
+    background-color: #ff4081;
+  }
+}
+
+.pink-background{
+  background-color: #ff4081 !important;
+}
+
+.fonSize9{
+  font-size: 9pt !important;
+}
+
+.w-1800{
+}
+
+.colorActive1{
+  color: #12ADC0
+}
+
 
 
 //---------------
@@ -26,7 +49,7 @@ html{
 }
 
 body{
-  background-color: beige;
+  background-color: aliceblue;
   margin: 0px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 0px;
@@ -56,83 +79,39 @@ body{
       flex-grow: 1;
       flex-shrink: 0;
       flex-basis: auto;
-      overflow: auto;
       margin: 0px auto;
       max-width: 1250px;
-      padding: 25px;
+      padding: 10px;
       //max-width: 100%;
       background-color: #FFF;
 
       .upload{
         float: left;
         width: 100%;
+        box-sizing: border-box;
         margin-top: 50px;
         margin-bottom: 50px;
-        padding-bottom: 50px;
+        padding: 25px;
         position: relative;
-        background-color: #C3FFEB;
+        background-color: #eaf2f9;
         border-radius: 5px;
 
-        .html-trained{
-          overflow: hidden;
-          height: 531px;
-          padding: 10px 25px;
-          //padding: 10px 0px
-        }
-
-        .edit-field{
-          width: 93%;
-          overflow: visible;
-          margin: 0px 25px;
-          padding: 20px;
-
-          textarea{
-            height: 181px;
-          }
-
-          .button{
-            margin-top: 25px;
-            margin-bottom: 5px;
-            background-color: #12ADC0;
-
-            &:hover{
-              background-color: #ff4081;
-            }
-          }
-        }
-
-        .html-trained__expand{
-          position: absolute;
-          bottom: 17px;
-          left: 48%;
-          cursor: pointer;
-          font-weight: bold;
-          &:hover{
-            color: #12ADC0;
-          }
-
-          .mat-icon{
-            position: relative;
-            top: 19px;
-            left: -7px;
-            font-size: 50px !important;
-            &:hover{
-              color: #12ADC0;
-            }
-          }
+        .upload__htmlTrained{
+          overflow: auto;
+          width: 100%;
+          margin-bottom: 30px;
         }
 
         .upload__top{
-          padding: 25px;
           overflow: visible;
+          float: left;
 
-          .titles, h3{
+          .titles, .title{
             width: 100%;
-            margin-left: 20px;
             float: left;
 
             .titles__title{
-              width: 25%;
+              width: 50%;
               text-align: center;
               float: left;
               color: #666;
@@ -141,6 +120,10 @@ body{
                 width: 48%;
               }
             }
+          }
+
+          .title{
+            margin-bottom: 35px;
           }
 
           .interface{
@@ -189,7 +172,7 @@ body{
             }
 
             .test-uploader{
-              width: 25%;
+              width: 50%;
               float: left;
               margin: auto;
 
@@ -201,7 +184,7 @@ body{
 
                 .file-container{
                   overflow: visible;
-                  margin: 45px auto auto auto;
+                  margin: 20px auto 25px auto;
                   height: 75px;
                   padding: 0px;
 
@@ -233,28 +216,191 @@ body{
           .extra{
             width: 100%;
             float: left;
-            padding-left: 20px;
             margin-top: 40px;
           }
+        }
 
-          .controls{
+        .upload__editing{
+          width: 100%;
+          float: left;
+
+          .asFields, .asRaw, .switcher, .asBtn, .asTable{
             width: 100%;
+            overflow: visible;
             float: left;
-            padding-left: 20px;
-            margin-top: 40px;
-            margin-bottom: 50px;
+          }
 
-            .button{
-              background-color: #1CAABA;
+          .asTable{
+            overflow: auto;
+          }
+
+          .switcher{
+            position: relative;
+
+            .switcher__button{
+              position: absolute;
+              top: 20px;
+              height: 20px;
+              line-height: 9px;
+
+              @include btn-indicate();
+
+              &:first-child{
+                right: 0px;
+              }
+
+              &:last-child{
+                right: 100px;
+              }
+            }
+          }
+
+          .asFields{
+            .asFields__title{
+              width: 100%;
+              display: block;
+              float: left;
+            }
+
+            .asFields__input{
+              width: 9.091%;
+              float: left;
+              font-size: 15px;
+
+              &:nth-child(11n+1){
+                margin-right: 0px;
+              }
+            }
+
+            .asFields__select{
+              margin-right: 0px;
+            }
+          }
+
+          .asRaw{
+            .asRaw__title{
+              width: 100%;
+              display: block;
+              float: left;
+            }
+
+            .asRaw__textarea{
+              width: 100%;
+
+              textarea{
+                height: 181px;
+              }
+            }
+          }
+
+          .asBtn{
+            .asBtn__addBtn{
+              margin-right: 20px;
+              background-color: #00CB00;
+              width: 100px;
 
               &:hover{
                 background-color: #ff4081;
               }
             }
 
-            .score{
-              font-weight: bold;
-              margin-left: 50px;
+            .asBtn__reset{
+              background-color: #12ADC0;
+              margin-top: 30px;
+              width: 100px;
+
+              &:hover{
+                background-color: #ff4081;
+              }
+            }
+          }
+
+          .asTable{
+            margin-top: 30px;
+            border-top: 1px solid #9A9A9A;
+
+            .asTable__table{
+              width: 100%;
+              font-size: 5.8pt;
+              margin-top: 30px;
+              border-collapse: collapse;
+
+              tbody{
+                line-height: 20px;
+                tr{
+                  cursor: pointer;
+                  &:hover{
+                    color: #12ADC0;
+                  }
+                  td{
+                    padding: 5px 1px;
+                    text-align: center;
+
+                    mat-icon{
+                      font-size: 17px;
+
+                      &:hover{
+                        color: red;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .upload__controls{
+          width: 100%;
+          float: left;
+          padding-top: 20px;
+          margin-bottom: 20px;
+
+          .button{
+            background-color: #00CB00;
+            width: 100px;
+
+            &:hover{
+              background-color: #ff4081;
+            }
+          }
+
+          .expandBtn{
+            margin-bottom: 5px;
+            background-color: #12ADC0;
+            margin-left: 20px;
+            margin-right: 20px;
+            width: 100px;
+            padding: 0px;
+
+            &:hover{
+              background-color: #ff4081;
+            }
+          }
+
+          .score{
+            font-weight: bold;
+            margin-left: 50px;
+          }
+        }
+
+        .html-trained__expand{
+          position: absolute;
+          bottom: 17px;
+          left: 48%;
+          cursor: pointer;
+          font-weight: bold;
+          &:hover{
+            color: #12ADC0;
+          }
+
+          .mat-icon{
+            position: relative;
+            top: 19px;
+            left: -7px;
+            font-size: 50px !important;
+            &:hover{
+              color: #12ADC0;
             }
           }
         }

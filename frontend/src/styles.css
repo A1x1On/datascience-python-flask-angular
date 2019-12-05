@@ -20,12 +20,24 @@
   padding: 0px !important;
 }
 
+.pink-background {
+  background-color: #ff4081 !important;
+}
+
+.fonSize9 {
+  font-size: 9pt !important;
+}
+
+.colorActive1 {
+  color: #12ADC0;
+}
+
 html {
   height: 100%;
 }
 
 body {
-  background-color: beige;
+  background-color: aliceblue;
   margin: 0px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 0px;
@@ -53,80 +65,46 @@ body .container-wrapper section {
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;
-  overflow: auto;
   margin: 0px auto;
   max-width: 1250px;
-  padding: 25px;
+  padding: 10px;
   background-color: #FFF;
 }
 body .container-wrapper section .upload {
   float: left;
   width: 100%;
+  box-sizing: border-box;
   margin-top: 50px;
   margin-bottom: 50px;
-  padding-bottom: 50px;
+  padding: 25px;
   position: relative;
-  background-color: #C3FFEB;
+  background-color: #eaf2f9;
   border-radius: 5px;
 }
-body .container-wrapper section .upload .html-trained {
-  overflow: hidden;
-  height: 531px;
-  padding: 10px 25px;
-}
-body .container-wrapper section .upload .edit-field {
-  width: 93%;
-  overflow: visible;
-  margin: 0px 25px;
-  padding: 20px;
-}
-body .container-wrapper section .upload .edit-field textarea {
-  height: 181px;
-}
-body .container-wrapper section .upload .edit-field .button {
-  margin-top: 25px;
-  margin-bottom: 5px;
-  background-color: #12ADC0;
-}
-body .container-wrapper section .upload .edit-field .button:hover {
-  background-color: #ff4081;
-}
-body .container-wrapper section .upload .html-trained__expand {
-  position: absolute;
-  bottom: 17px;
-  left: 48%;
-  cursor: pointer;
-  font-weight: bold;
-}
-body .container-wrapper section .upload .html-trained__expand:hover {
-  color: #12ADC0;
-}
-body .container-wrapper section .upload .html-trained__expand .mat-icon {
-  position: relative;
-  top: 19px;
-  left: -7px;
-  font-size: 50px !important;
-}
-body .container-wrapper section .upload .html-trained__expand .mat-icon:hover {
-  color: #12ADC0;
+body .container-wrapper section .upload .upload__htmlTrained {
+  overflow: auto;
+  width: 100%;
+  margin-bottom: 30px;
 }
 body .container-wrapper section .upload .upload__top {
-  padding: 25px;
   overflow: visible;
-}
-body .container-wrapper section .upload .upload__top .titles, body .container-wrapper section .upload .upload__top h3 {
-  width: 100%;
-  margin-left: 20px;
   float: left;
 }
-body .container-wrapper section .upload .upload__top .titles .titles__title, body .container-wrapper section .upload .upload__top h3 .titles__title {
-  width: 25%;
+body .container-wrapper section .upload .upload__top .titles, body .container-wrapper section .upload .upload__top .title {
+  width: 100%;
+  float: left;
+}
+body .container-wrapper section .upload .upload__top .titles .titles__title, body .container-wrapper section .upload .upload__top .title .titles__title {
+  width: 50%;
   text-align: center;
   float: left;
   color: #666;
 }
-body .container-wrapper section .upload .upload__top .titles .titles__title:first-child, body .container-wrapper section .upload .upload__top h3 .titles__title:first-child {
+body .container-wrapper section .upload .upload__top .titles .titles__title:first-child, body .container-wrapper section .upload .upload__top .title .titles__title:first-child {
   width: 48%;
+}
+body .container-wrapper section .upload .upload__top .title {
+  margin-bottom: 35px;
 }
 body .container-wrapper section .upload .upload__top .interface {
   width: 100%;
@@ -167,7 +145,7 @@ body .container-wrapper section .upload .upload__top .interface .train-uploader 
   background-color: #12ADC0;
 }
 body .container-wrapper section .upload .upload__top .interface .test-uploader {
-  width: 25%;
+  width: 50%;
   float: left;
   margin: auto;
 }
@@ -177,7 +155,7 @@ body .container-wrapper section .upload .upload__top .interface .test-uploader .
 }
 body .container-wrapper section .upload .upload__top .interface .test-uploader .test-uploader__input .file-container {
   overflow: visible;
-  margin: 45px auto auto auto;
+  margin: 20px auto 25px auto;
   height: 75px;
   padding: 0px;
 }
@@ -200,25 +178,157 @@ body .container-wrapper section .upload .upload__top .interface .test-uploader .
 body .container-wrapper section .upload .upload__top .extra {
   width: 100%;
   float: left;
-  padding-left: 20px;
   margin-top: 40px;
 }
-body .container-wrapper section .upload .upload__top .controls {
+body .container-wrapper section .upload .upload__editing {
   width: 100%;
   float: left;
-  padding-left: 20px;
-  margin-top: 40px;
-  margin-bottom: 50px;
 }
-body .container-wrapper section .upload .upload__top .controls .button {
+body .container-wrapper section .upload .upload__editing .asFields, body .container-wrapper section .upload .upload__editing .asRaw, body .container-wrapper section .upload .upload__editing .switcher, body .container-wrapper section .upload .upload__editing .asBtn, body .container-wrapper section .upload .upload__editing .asTable {
+  width: 100%;
+  overflow: visible;
+  float: left;
+}
+body .container-wrapper section .upload .upload__editing .asTable {
+  overflow: auto;
+}
+body .container-wrapper section .upload .upload__editing .switcher {
+  position: relative;
+}
+body .container-wrapper section .upload .upload__editing .switcher .switcher__button {
+  position: absolute;
+  top: 20px;
+  height: 20px;
+  line-height: 9px;
   background-color: #1CAABA;
 }
-body .container-wrapper section .upload .upload__top .controls .button:hover {
+body .container-wrapper section .upload .upload__editing .switcher .switcher__button:hover {
   background-color: #ff4081;
 }
-body .container-wrapper section .upload .upload__top .controls .score {
+body .container-wrapper section .upload .upload__editing .switcher .switcher__button:first-child {
+  right: 0px;
+}
+body .container-wrapper section .upload .upload__editing .switcher .switcher__button:last-child {
+  right: 100px;
+}
+body .container-wrapper section .upload .upload__editing .asFields .asFields__title {
+  width: 100%;
+  display: block;
+  float: left;
+}
+body .container-wrapper section .upload .upload__editing .asFields .asFields__input {
+  width: 9.091%;
+  float: left;
+  font-size: 15px;
+}
+body .container-wrapper section .upload .upload__editing .asFields .asFields__input:nth-child(11n+1) {
+  margin-right: 0px;
+}
+body .container-wrapper section .upload .upload__editing .asFields .asFields__select {
+  margin-right: 0px;
+}
+body .container-wrapper section .upload .upload__editing .asRaw .asRaw__title {
+  width: 100%;
+  display: block;
+  float: left;
+}
+body .container-wrapper section .upload .upload__editing .asRaw .asRaw__textarea {
+  width: 100%;
+}
+body .container-wrapper section .upload .upload__editing .asRaw .asRaw__textarea textarea {
+  height: 181px;
+}
+body .container-wrapper section .upload .upload__editing .asBtn .asBtn__addBtn {
+  margin-right: 20px;
+  background-color: #00CB00;
+  width: 100px;
+}
+body .container-wrapper section .upload .upload__editing .asBtn .asBtn__addBtn:hover {
+  background-color: #ff4081;
+}
+body .container-wrapper section .upload .upload__editing .asBtn .asBtn__reset {
+  background-color: #12ADC0;
+  margin-top: 30px;
+  width: 100px;
+}
+body .container-wrapper section .upload .upload__editing .asBtn .asBtn__reset:hover {
+  background-color: #ff4081;
+}
+body .container-wrapper section .upload .upload__editing .asTable {
+  margin-top: 30px;
+  border-top: 1px solid #9A9A9A;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table {
+  width: 100%;
+  font-size: 5.8pt;
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody {
+  line-height: 20px;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody tr {
+  cursor: pointer;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody tr:hover {
+  color: #12ADC0;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody tr td {
+  padding: 5px 1px;
+  text-align: center;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody tr td mat-icon {
+  font-size: 17px;
+}
+body .container-wrapper section .upload .upload__editing .asTable .asTable__table tbody tr td mat-icon:hover {
+  color: red;
+}
+body .container-wrapper section .upload .upload__controls {
+  width: 100%;
+  float: left;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+body .container-wrapper section .upload .upload__controls .button {
+  background-color: #00CB00;
+  width: 100px;
+}
+body .container-wrapper section .upload .upload__controls .button:hover {
+  background-color: #ff4081;
+}
+body .container-wrapper section .upload .upload__controls .expandBtn {
+  margin-bottom: 5px;
+  background-color: #12ADC0;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 100px;
+  padding: 0px;
+}
+body .container-wrapper section .upload .upload__controls .expandBtn:hover {
+  background-color: #ff4081;
+}
+body .container-wrapper section .upload .upload__controls .score {
   font-weight: bold;
   margin-left: 50px;
+}
+body .container-wrapper section .upload .html-trained__expand {
+  position: absolute;
+  bottom: 17px;
+  left: 48%;
+  cursor: pointer;
+  font-weight: bold;
+}
+body .container-wrapper section .upload .html-trained__expand:hover {
+  color: #12ADC0;
+}
+body .container-wrapper section .upload .html-trained__expand .mat-icon {
+  position: relative;
+  top: 19px;
+  left: -7px;
+  font-size: 50px !important;
+}
+body .container-wrapper section .upload .html-trained__expand .mat-icon:hover {
+  color: #12ADC0;
 }
 body .container-wrapper footer {
   overflow: auto;
