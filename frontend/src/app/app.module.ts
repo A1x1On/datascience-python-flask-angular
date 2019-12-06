@@ -6,13 +6,16 @@ import { BrowserAnimationsModule              } from '@angular/platform-browser/
 import { MatIconModule, MatCardModule,
          MatButtonModule, MatFormFieldModule,
          MatRadioModule, MatSelectModule,
-         MatInputModule                       } from '@angular/material';
+         MatInputModule, MatTooltipModule,
+         MatTableModule,
+         MatDialogModule                      } from '@angular/material';
 import { InputFileConfig, InputFileModule     } from 'ngx-input-file';
 import { ToasterModule                        } from 'angular2-toaster';
 import { NgBusyModule                         } from 'ng-busy';
 
 import { AppComponent                         } from './app.component';
 import { HomeComponent                        } from './home/home.component';
+import { DialogScore                          } from './home/home.component';
 import { HttpClientModule                     } from '@angular/common/http';
 import { AccountService                       } from './services/account.service';
 
@@ -26,6 +29,10 @@ const config: InputFileConfig = {};
   declarations: [
     AppComponent,
     HomeComponent,
+    DialogScore
+  ],
+  entryComponents: [
+    DialogScore,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'my-app'}),
@@ -42,6 +49,9 @@ const config: InputFileConfig = {};
     MatCardModule,
     MatButtonModule,
     MatInputModule,
+    MatDialogModule,
+    MatTableModule,
+    MatTooltipModule,
     MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,

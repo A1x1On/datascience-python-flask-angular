@@ -22,6 +22,8 @@
           <mat-radio-button class="models__group__btn" [value]="5">Gradient Boosting for classification (GradientBoostingClassifier)</mat-radio-button>
           <mat-radio-button class="models__group__btn" [value]="6">Soft Voting/Majority Rule classifier for unfitted estimators (VotingClassifier)</mat-radio-button>
         </mat-radio-group>
+
+        <button mat-raised-button (click)="openDialog()" class="models__scoreBtn">Show Score table!</button>
       </div>
 
 <!--      <input-file [(ngModel)]="files.train" class="train-uploader"></input-file>-->
@@ -57,27 +59,27 @@
     </div>
     <div class="asFields" *ngIf="isManual">
       <h3 class="asFields__title">Enter require data into the fields</h3>
-      <mat-form-field class="asFields__input"><input matInput placeholder="R3"          type = "number" [(ngModel)]="test.r3" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="R4"          type = "number" [(ngModel)]="test.r4" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="R5"          type = "number" [(ngModel)]="test.r5" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="L1"          type = "number" [(ngModel)]="test.l1" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="L2"          type = "number" [(ngModel)]="test.l2" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="P1"          type = "number" [(ngModel)]="test.p1" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="A2"          type = "number" [(ngModel)]="test.a2" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="A4"          type = "number" [(ngModel)]="test.a4" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="1/A5"        type = "number" [(ngModel)]="test.a1a5" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="A6"          type = "number" [(ngModel)]="test.a6" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="F1"          type = "number" [(ngModel)]="test.f1" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="F2"          type = "number" [(ngModel)]="test.f2" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="F3"          type = "number" [(ngModel)]="test.f3" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="F4"          type = "number" [(ngModel)]="test.f4" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="R6"          type = "number" [(ngModel)]="test.r6" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="L3"          type = "number" [(ngModel)]="test.l3" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="1/A1"        type = "number" [(ngModel)]="test.a1a1" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="1/A3"        type = "number" [(ngModel)]="test.a1a3" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="1/F8"        type = "number" [(ngModel)]="test.f1f8" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="F11"         type = "number" [(ngModel)]="test.f11" /></mat-form-field>
-      <mat-form-field class="asFields__input"><input matInput placeholder="P2"          type = "number" [(ngModel)]="test.p2" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R3"   type = "number" [(ngModel)]="test.r3"   title="Рентабельность собственного капитала. Показывает, насколько эффективно был использован вложенный в дело капитал. Важный показатель для любого инвестора"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R4"   type = "number" [(ngModel)]="test.r4"   title="Рентабельность продукции. Показывает, какое количество прибыли принесет один рубль, вложенный в производство, предприятию"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R5"   type = "number" [(ngModel)]="test.r5"   title="Рентабельность оборотных активов. Отражает эффективность использования оборотных средств организаци"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L1"   type = "number" [(ngModel)]="test.l1"   title="Быстрый коэффициент ликвидности. Показывает способность предприятия в критической ситуации выплатить краткосрочные обязательства за счет продажи ликвидных активов"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L2"   type = "number" [(ngModel)]="test.l2"   title="Коэффициент абсолютной ликвидности. Показывает, способна ли компания погасить долг досрочн"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="P1"   type = "number" [(ngModel)]="test.p1"   title="Текущий коэффициент ликвидности. Показывает насколько способна компания погашать краткосрочные обязательства за счет только оборотных активов. Чем больше значение этого показателя, тем лучше платежеспособность компании"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A2"   type = "number" [(ngModel)]="test.a2"   title="Коэффициент оборачиваемости активов. Показывает, насколько эффективно используются ресурсы, которые были привлечены для производства продукт"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A4"   type = "number" [(ngModel)]="test.a4"   title="Коэффициент оборачиваемости кредиторской задолженности. Показывает, сколько необходимо оборотов, чтобы выплатить выставленные счета"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A5" type = "number" [(ngModel)]="test.a1a5" title="Коэффициент оборачиваемости дебиторской задолженности. Показывает, как быстро компания получает оплату за товары от своих покупателей" /></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="A6"   type = "number" [(ngModel)]="test.a6"   title="Коэффициент оборачиваемости запасов. Этот показатель характеризует качество запасов и эффективность управления ими"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F1"   type = "number" [(ngModel)]="test.f1"   title="Коэффициент финансовой зависимости. Показывает, насколько сильна опасность нехватки денежных средств в компании. Чем больше этот коэффициент, тем рискованнее ситуация"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F2"   type = "number" [(ngModel)]="test.f2"   title="Коэффициент автономии собственных средств. Показывает долю личного капитала предприятия в общей сумме средств. Чем выше этот коэффициент, тем стабильнее предприятие"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F3"   type = "number" [(ngModel)]="test.f3"   title="Коэффициент обеспеченности запасов собственными оборотными средствами. Показывает, какая доля затрат и запасов покрыта средствами компании"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F4"   type = "number" [(ngModel)]="test.f4"   title="Индекс постоянного актива. Отражает долю источников средств предприятия, которые направлены на покрытие внеоборотных активов"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="R6"   type = "number" [(ngModel)]="test.r6"   title="Коэффициент концентрации заемного капитала. Показывает, какая доля земных средств была инвестирована в предприятие"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="L3"   type = "number" [(ngModel)]="test.l3"   title="Коэффициент покрытия запасов. Индикатор финансовой устойчивости. Показывает , достаточно ли источников финансирования для того, чтобы создавать производственные и прочие запасы"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A1" type = "number" [(ngModel)]="test.a1a1" title="Коэффициент фондоотдачи. Показывает, насколько эффективно используются основные средства компании"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/A3" type = "number" [(ngModel)]="test.a1a3" title="Коэффициент оборачиваемости собственного капитала. Показывает, насколько эффективно компания управляет собственными средствами"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="1/F8" type = "number" [(ngModel)]="test.f1f8" title="Коэффициент соотношения заемных и собственных средств. Показывает, как сильно компания зависит от заемных средств"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="F11"  type = "number" [(ngModel)]="test.f11"  title="Коэффициент покрытия активов. Показывает способность компании погасить долги за счет имеющихся активов"/></mat-form-field>
+      <mat-form-field class="asFields__input"><input matInput placeholder="P2"   type = "number" [(ngModel)]="test.p2"   title="Коэффициент обеспеченности собственными средствами. Показывает, какая доля оборотных активов, которые финансируются из собственных средств компании"/></mat-form-field>
       <mat-form-field class="asFields__input asFields__select">
         <mat-label>Binary Risk</mat-label>
         <mat-select [(ngModel)]="test.risk">
@@ -98,7 +100,7 @@
     <div class="asBtn">
       <button mat-raised-button type="button" class="asBtn__addBtn"    *ngIf = "isManual && !testEditing" (click)="addTestRow()">Add</button>
       <button mat-raised-button type="button" class="asBtn__addBtn"    *ngIf = "isManual && testEditing"  (click)="editTestRow()">Edit</button>
-      <button mat-raised-button type="button" class="asBtn__reset" *ngIf = "isManual"                 (click)="resetTest()">Reset</button>
+      <button mat-raised-button type="button" class="asBtn__reset"     *ngIf = "isManual"                 (click)="resetTest()">Reset</button>
     </div>
 
     <div class="asTable" *ngIf="isManual && tests.length">
@@ -106,28 +108,28 @@
         <thead>
           <tr>
             <th></th>
-            <th>R3</th>
-            <th>R4</th>
-            <th>R5</th>
-            <th>L1</th>
-            <th>L2</th>
-            <th>P1</th>
-            <th>A2</th>
-            <th>A4</th>
-            <th>1/A5</th>
-            <th>A6</th>
-            <th>F1</th>
-            <th>F2</th>
-            <th>F3</th>
-            <th>F4</th>
-            <th>R6</th>
-            <th>L3</th>
-            <th>1/A1</th>
-            <th>1/A3</th>
-            <th>1/F8</th>
-            <th>F11</th>
-            <th>P2</th>
-            <th>Binary Risk</th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Рентабельность собственного капитала"                                  class="btnTip">R3</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Рентабельность продукции"                                              class="btnTip">R4</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Рентабельность оборотных активов"                                      class="btnTip">R5</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Быстрый коэффициент ликвидности"                                       class="btnTip">L1</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент абсолютной ликвидности"                                    class="btnTip">L2</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Текущий коэффициент ликвидности"                                       class="btnTip">P1</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент оборачиваемости активов"                                   class="btnTip">A2</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент оборачиваемости кредиторской задолженности"                class="btnTip">A4</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент оборачиваемости дебиторской задолженности"                 class="btnTip">1/A5</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент оборачиваемости запасов"                                   class="btnTip">A6</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент финансовой зависимости"                                    class="btnTip">F1</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент автономии собственных средств"                             class="btnTip">F2</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент обеспеченности запасов собственными оборотными средствами" class="btnTip">F3</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Индекс постоянного актива"                                             class="btnTip">F4</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент концентрации заемного капитала"                            class="btnTip">R6</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент покрытия запасов"                                          class="btnTip">L3</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент фондоотдачи"                                               class="btnTip">1/A1</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент оборачиваемости собственного капитала"                     class="btnTip">1/A3</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент соотношения заемных и собственных средств"                 class="btnTip">1/F8</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент покрытия активов"                                          class="btnTip">F11</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент обеспеченности собственными средствами"                    class="btnTip">P2</button></th>
+            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip=""                                                                      class="btnTip">Binary <br *ngIf="!manualExpend"> Risk</button></th>
           </tr>
         </thead>
         <tbody>
@@ -192,7 +194,7 @@
   <div class="upload__controls">
     <button mat-raised-button type="button" class="button" (click)="submission()">Submission</button>
     <button mat-raised-button type="button" class="expandBtn" (click)="expandManual()">Expand Page</button>
-    <span *ngIf="score != null" class="score">Score: {{score}}</span>
+<!--    <span *ngIf="score != null" class="score">Score: {{score}}</span>-->
   </div>
 
 

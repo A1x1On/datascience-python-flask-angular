@@ -1,4 +1,4 @@
-import { Component              } from '@angular/core';
+import { Component, Inject              } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from  '@angular/forms';
 import { DomSanitizer           } from '@angular/platform-browser';
 import { HttpClient             } from '@angular/common/http';
@@ -10,12 +10,55 @@ import { AccountService         } from '../services/account.service';
 import { ToasterService         } from 'angular2-toaster';
 import { AppGlobal              } from '../app.global';
 
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 import * as $ from 'jquery'
 
 export interface Select {
   value : string;
   text  : string;
 }
+
+export interface DialogData {
+  animal: string;
+  name: string;
+}
+
+export interface PeriodicElement {
+  name            : string;
+  position        : number;
+  accuracy_score  : number;
+  f1_score        : number;
+  recall_score    : number;
+  precision_score : number;
+}
+
+@Component({
+  selector: 'score-dialog',
+  templateUrl: './score.dialog.html',
+})
+export class DialogScore {
+  scoreValues: PeriodicElement[] = [
+    {position: 1, name: 'RandomForestClassifier'    , accuracy_score: 0.897, f1_score: 0.893, recall_score: 0.897, precision_score: 0.916},
+    {position: 2, name: 'AdaBoostClassifier'        , accuracy_score: 0.806, f1_score: 0.814, recall_score: 0.806, precision_score: 0.869},
+    {position: 3, name: 'BaggingClassifier'         , accuracy_score: 0.908, f1_score: 0.905, recall_score: 0.908, precision_score: 0.923},
+    {position: 4, name: 'ExtraTreesClassifier'      , accuracy_score: 0.918, f1_score: 0.915, recall_score: 0.918, precision_score: 0.929},
+    {position: 5, name: 'GradientBoostingClassifier', accuracy_score: 0.913, f1_score: 0.911, recall_score: 0.913, precision_score: 0.927},
+    {position: 6, name: 'VotingClassifier'          , accuracy_score: 0.801, f1_score: 0.744, recall_score: 0.801, precision_score: 0.710}
+  ];
+
+  displayedColumns: string[] = ['position', 'name', 'accuracy_score', 'f1_score', 'recall_score', 'precision_score'];
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogScore>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
 
 @Component({
   selector    : 'app-home',
@@ -25,6 +68,11 @@ export interface Select {
 export class HomeComponent {
   public message = `Angular Universal`;
   public image   = 'https://camo.githubusercontent.com/81f72f2fdf98aa1d30b5b215bc8ca9420b249e81/68747470733a2f2f616e67756c61722e696f2f67656e6572617465642f696d616765732f6d61726b6574696e672f636f6e636570742d69636f6e732f756e6976657273616c2e706e67';
+
+  animal: string;
+  name: string;
+
+
 
   trained       : any;
   files         : any;
@@ -49,9 +97,11 @@ export class HomeComponent {
     {value: 'risk-company', text: 'Risks of Company'},
     {value: 'custom'      , text: 'Custom'}
   ];
+
   constructor(private accountService : AccountService,
               private app            : AppGlobal,
               private http           : HttpClient,
+              public dialog: MatDialog,
               private sanitizer      : DomSanitizer,
               private toasterService : ToasterService) {
     this.trained      = '';
@@ -71,6 +121,18 @@ export class HomeComponent {
       train : null,
       test  : null
     };
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogScore, {
+      width: '1250px',
+      data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
   }
 
   reset(){
@@ -102,6 +164,11 @@ export class HomeComponent {
 
   ngOnInit() {
     $('.html-trained').fadeOut(1);
+
+
+
+
+
   }
 
   addTestRow(){
@@ -176,6 +243,7 @@ export class HomeComponent {
       $('.edit-field')         .addClass('p-0I');
       $('.asTable')            .addClass('w-1800');
       $('.asTable__table')     .addClass('fonSize9');
+      $('.btnTip')             .addClass('left-36');
     }else{
       $('section')             .removeClass('max-w-100perI');
       $('.edit-field textarea').removeClass('fs-135');
@@ -183,7 +251,7 @@ export class HomeComponent {
       $('.edit-field')         .removeClass('p-0I');
       $('.asTable')            .removeClass('w-1800');
       $('.asTable__table')     .removeClass('fonSize9');
-
+      $('.btnTip')             .removeClass('left-36');
     }
   }
 

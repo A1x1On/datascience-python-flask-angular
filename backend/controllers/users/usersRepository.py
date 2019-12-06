@@ -15,9 +15,6 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import precision_score
 
-import json
-from flask            import Flask, Blueprint, jsonify, request, Response, send_from_directory, send_file
-
 import numpy                   as np
 import matplotlib              as pl
 import matplotlib.pyplot       as plt
@@ -65,32 +62,16 @@ class Repository():
         return 'succs'
 
     def getRiskCompPrediction(criteria):
-
-        print('-------------------------')
-        print(criteria)
-
-        data=json.loads(request.data.decode('utf-8'))
-        print(data)
-
-
         file_path_train = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), 'COMPANIES_TRAIN.csv')
         train           = pd.read_csv(file_path_train, delimiter=";")
 
         file_path_test  = os.path.join(join(dirname(__file__), '..\\..\\static\\uploaded\\'), criteria.titles[0].title)
         test            = pd.read_csv(file_path_test, delimiter=";")
 
-        #tr = pd.DataFrame(train)
-        #print(tr.Target.value_counts())
-        #le              = LabelEncoder() # convert string to numbers
-        #train['Target'] = le.fit_transform(train['Target'])
-
         print(train.head())
-
         print(test.head())
 
-
         train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
-        #test['Target']  = test[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
 
         bin             = pd.get_dummies(train['binaryrisk'], drop_first = True)
         train           = pd.concat([train,bin], axis = 1)
@@ -149,19 +130,9 @@ class Repository():
         X_train        = train.drop('Target', axis = 1)
         y_train        = train['Target']
 
-        #X_test         = test.drop('Target', axis = 1)
-        #y_test         = test['Target']
-
-
         X_train        = train.drop('Target', axis = 1)
         y_train        = train['Target']
         X_test         = test
-
-
-        print('-------y 1')
-        print(X_train.head())
-        print('-------2 ')
-        print(y_train.head())
 
         rfc            = getClassifier(criteria.classifier)
         rfc.fit(X_train, y_train) # learned by train data and train target
@@ -191,35 +162,13 @@ class Repository():
 
         predictions           = pd.DataFrame(predictions)
 
-        score                 = rfc.score(X_train, y_train)
-
-        #score            = accuracy_score(y_test, predictions)
-        #print('F1')
-        #_f1_score        = f1_score(y_test, predictions, average='weighted')
-        #print('RECALL')
-        #_recall_score    = recall_score(y_test, predictions, average='weighted')
-        #print('PERCISION')
-        #_precision_score = precision_score(y_test, predictions, average='weighted')
-
-        #print('-------SCORES--------')
-        #print('accuracy_score_', score)
-        #print('f1_score_______', _f1_score)
-        #print('recall_score___', _recall_score)
-        #print('precision_score', _precision_score)
-
-
-        #print(rfc.score(y_test, predictions))
-
         predictions.columns   = ['Target']
         predictions['Target'] = predictions[['Target']].apply(string2Number, revert=1, axis = 1) # replace numer risk to string
 
         risk                  = pd.concat([R3,R4,R5,L1,L2,P1,A2,A4,A5,A6,F1,F2,F3,F4,R6,L3,A1,A3,F8,Ff,P2,predictions], axis = 1)
-
-
         risk                  = risk.sort_values(by=['Target'])
 
-        #risk.to_csv('test_predictions.csv', index = False)
-        return '{"result": 9, "score": ' + str(score) + '}'+ getHTML(risk)
+        return '{"result": 9, "score": ' + str(0.1) + '}'+ getHTML(risk)
 
 # AUX ------------------------------------
 def getHTML(risk):
@@ -292,5 +241,5 @@ def replaceComma(cols):
 
     if type(num) is str:
         num = num.replace(',', '.')
-    return num # round(float(num), 3)
 
+    return repr(float(num)) # round(float(num), 3) repr - without rouding!
