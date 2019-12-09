@@ -136,6 +136,9 @@ body .container-wrapper section .upload .upload__top .interface .models .models_
 body .container-wrapper section .upload .upload__top .interface .models .models__group .models__group__btn:hover {
   color: #12ADC0;
 }
+body .container-wrapper section .upload .upload__top .interface .models .models__group .models__group__btn .sizeOff {
+  font-size: 11px;
+}
 body .container-wrapper section .upload .upload__top .interface .models .models__scoreBtn {
   margin-top: 30px;
   margin-left: -20px;

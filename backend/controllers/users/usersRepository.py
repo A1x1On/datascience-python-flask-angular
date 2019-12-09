@@ -8,6 +8,10 @@ from   sklearn.ensemble        import ExtraTreesClassifier
 from   sklearn.ensemble        import BaggingClassifier
 from   sklearn.ensemble        import AdaBoostClassifier
 from   sklearn.ensemble        import VotingClassifier
+from   sklearn.ensemble        import RandomForestClassifier
+from   sklearn.tree            import DecisionTreeClassifier
+from   sklearn.linear_model    import LogisticRegression
+from   sklearn.neighbors       import KNeighborsClassifier
 from   sklearn.model_selection import GridSearchCV
 
 from sklearn.metrics import accuracy_score
@@ -71,73 +75,74 @@ class Repository():
         print(train.head())
         print(test.head())
 
-        train['Target'] = train[['Target']].apply(string2Number, revert=0, axis = 1) # replace string risk to number
+        train.drop(['binaryrisk'], axis=1, inplace=True)
+        test.drop(['binaryrisk'], axis=1, inplace=True)
 
-        bin             = pd.get_dummies(train['binaryrisk'], drop_first = True)
-        train           = pd.concat([train,bin], axis = 1)
-        train.drop('binaryrisk',axis = 1, inplace = True)
+        train['Target'] = train['Target'].map({'very high risk': 1, 'high risk': 2, 'the average risk': 3, 'low risk': 4, 'very low risk': 5})
 
-        train['R5']    = train[['R5']].apply(impute_r5, axis = 1)
-        train['R3']    = train[['R3']].apply(replaceComma, axis = 1)
-        train['R4']    = train[['R4']].apply(replaceComma, axis = 1)
-        train['R5']    = train[['R5']].apply(replaceComma, axis = 1)
-        train['L1']    = train[['L1']].apply(replaceComma, axis = 1)
-        train['L2']    = train[['L2']].apply(replaceComma, axis = 1)
-        train['P1']    = train[['P1']].apply(replaceComma, axis = 1)
-        train['A2']    = train[['A2']].apply(replaceComma, axis = 1)
-        train['A4']    = train[['A4']].apply(replaceComma, axis = 1)
-        train['1/A5']  = train[['1/A5']].apply(replaceComma, axis = 1)
-        train['A6']    = train[['A6']].apply(replaceComma, axis = 1)
-        train['F1']    = train[['F1']].apply(replaceComma, axis = 1)
-        train['F2']    = train[['F2']].apply(replaceComma, axis = 1)
-        train['F3']    = train[['F3']].apply(replaceComma, axis = 1)
-        train['F4']    = train[['F4']].apply(replaceComma, axis = 1)
-        train['R6']    = train[['R6']].apply(replaceComma, axis = 1)
-        train['L3']    = train[['L3']].apply(replaceComma, axis = 1)
-        train['1/A1']  = train[['1/A1']].apply(replaceComma, axis = 1)
-        train['1/A3']  = train[['1/A3']].apply(replaceComma, axis = 1)
-        train['1/F8']  = train[['1/F8']].apply(replaceComma, axis = 1)
-        train['F11']   = train[['F11']].apply(replaceComma, axis = 1)
-        train['P2']    = train[['P2']].apply(replaceComma, axis = 1)
+        test            = test.dropna()
+        train           = train.dropna()
 
-        bin            = pd.get_dummies(test['binaryrisk'], drop_first = True)
-        test           = pd.concat([test,bin], axis = 1)
-        test.drop('binaryrisk',axis = 1, inplace = True)
+        train['R5']     = train[['R5']].apply(impute_r5, axis = 1)
+        train['R3']     = train[['R3']].apply(replaceComma, axis = 1)
+        train['R4']     = train[['R4']].apply(replaceComma, axis = 1)
+        train['R5']     = train[['R5']].apply(replaceComma, axis = 1)
+        train['L1']     = train[['L1']].apply(replaceComma, axis = 1)
+        train['L2']     = train[['L2']].apply(replaceComma, axis = 1)
+        train['P1']     = train[['P1']].apply(replaceComma, axis = 1)
+        train['A2']     = train[['A2']].apply(replaceComma, axis = 1)
+        train['A4']     = train[['A4']].apply(replaceComma, axis = 1)
+        train['1/A5']   = train[['1/A5']].apply(replaceComma, axis = 1)
+        train['A6']     = train[['A6']].apply(replaceComma, axis = 1)
+        train['F1']     = train[['F1']].apply(replaceComma, axis = 1)
+        train['F2']     = train[['F2']].apply(replaceComma, axis = 1)
+        train['F3']     = train[['F3']].apply(replaceComma, axis = 1)
+        train['F4']     = train[['F4']].apply(replaceComma, axis = 1)
+        train['R6']     = train[['R6']].apply(replaceComma, axis = 1)
+        train['L3']     = train[['L3']].apply(replaceComma, axis = 1)
+        train['1/A1']   = train[['1/A1']].apply(replaceComma, axis = 1)
+        train['1/A3']   = train[['1/A3']].apply(replaceComma, axis = 1)
+        train['1/F8']   = train[['1/F8']].apply(replaceComma, axis = 1)
+        train['F11']    = train[['F11']].apply(replaceComma, axis = 1)
+        train['P2']     = train[['P2']].apply(replaceComma, axis = 1)
 
-        test['R5']     = test[['R5']].apply(impute_r5, axis = 1)
-        test['R3']     = test[['R3']].apply(replaceComma, axis = 1)
-        test['R4']     = test[['R4']].apply(replaceComma, axis = 1)
-        test['R5']     = test[['R5']].apply(replaceComma, axis = 1)
-        test['L1']     = test[['L1']].apply(replaceComma, axis = 1)
-        test['L2']     = test[['L2']].apply(replaceComma, axis = 1)
-        test['P1']     = test[['P1']].apply(replaceComma, axis = 1)
-        test['A2']     = test[['A2']].apply(replaceComma, axis = 1)
-        test['A4']     = test[['A4']].apply(replaceComma, axis = 1)
-        test['1/A5']   = test[['1/A5']].apply(replaceComma, axis = 1)
-        test['A6']     = test[['A6']].apply(replaceComma, axis = 1)
-        test['F1']     = test[['F1']].apply(replaceComma, axis = 1)
-        test['F2']     = test[['F2']].apply(replaceComma, axis = 1)
-        test['F3']     = test[['F3']].apply(replaceComma, axis = 1)
-        test['F4']     = test[['F4']].apply(replaceComma, axis = 1)
-        test['R6']     = test[['R6']].apply(replaceComma, axis = 1)
-        test['L3']     = test[['L3']].apply(replaceComma, axis = 1)
-        test['1/A1']   = test[['1/A1']].apply(replaceComma, axis = 1)
-        test['1/A3']   = test[['1/A3']].apply(replaceComma, axis = 1)
-        test['1/F8']   = test[['1/F8']].apply(replaceComma, axis = 1)
-        test['F11']    = test[['F11']].apply(replaceComma, axis = 1)
-        test['P2']     = test[['P2']].apply(replaceComma, axis = 1)
+        test['R5']      = test[['R5']].apply(impute_r5, axis = 1)
+        test['R3']      = test[['R3']].apply(replaceComma, axis = 1)
+        test['R4']      = test[['R4']].apply(replaceComma, axis = 1)
+        test['R5']      = test[['R5']].apply(replaceComma, axis = 1)
+        test['L1']      = test[['L1']].apply(replaceComma, axis = 1)
+        test['L2']      = test[['L2']].apply(replaceComma, axis = 1)
+        test['P1']      = test[['P1']].apply(replaceComma, axis = 1)
+        test['A2']      = test[['A2']].apply(replaceComma, axis = 1)
+        test['A4']      = test[['A4']].apply(replaceComma, axis = 1)
+        test['1/A5']    = test[['1/A5']].apply(replaceComma, axis = 1)
+        test['A6']      = test[['A6']].apply(replaceComma, axis = 1)
+        test['F1']      = test[['F1']].apply(replaceComma, axis = 1)
+        test['F2']      = test[['F2']].apply(replaceComma, axis = 1)
+        test['F3']      = test[['F3']].apply(replaceComma, axis = 1)
+        test['F4']      = test[['F4']].apply(replaceComma, axis = 1)
+        test['R6']      = test[['R6']].apply(replaceComma, axis = 1)
+        test['L3']      = test[['L3']].apply(replaceComma, axis = 1)
+        test['1/A1']    = test[['1/A1']].apply(replaceComma, axis = 1)
+        test['1/A3']    = test[['1/A3']].apply(replaceComma, axis = 1)
+        test['1/F8']    = test[['1/F8']].apply(replaceComma, axis = 1)
+        test['F11']     = test[['F11']].apply(replaceComma, axis = 1)
+        test['P2']      = test[['P2']].apply(replaceComma, axis = 1)
 
-        X_train        = train.drop('Target', axis = 1)
-        y_train        = train['Target']
+        X_train         = train.drop('Target', axis = 1)
+        y_train         = train['Target']
 
-        X_train        = train.drop('Target', axis = 1)
-        y_train        = train['Target']
-        X_test         = test
+        X_train         = train.drop('Target', axis = 1)
+        y_train         = train['Target']
+        X_test          = test
 
-        rfc            = getClassifier(criteria.classifier)
-        rfc.fit(X_train, y_train) # learned by train data and train target
+        if criteria.classifier == 5:
+            predictions = getCombinedPredictions(X_train, y_train, X_test)
+        else:
+            rfc         = getClassifier(criteria.classifier)
+            rfc.fit(X_train, y_train) # learned by train data and train target
+            predictions = rfc.predict(X_test) # got prediction
 
-        predictions           = rfc.predict(X_test) # got prediction
         R3                    = pd.DataFrame(X_test['R3'])
         R4                    = pd.DataFrame(X_test['R4'])
         R5                    = pd.DataFrame(X_test['R5'])
@@ -187,19 +192,33 @@ def getHTML(risk):
 
 def getClassifier(classifier):
     if classifier   == 1:
-        return  RandomForestClassifier(n_estimators = 151)
+        return LogisticRegression(n_jobs=-1, random_state=17, C=33)
     elif classifier == 2:
-        return AdaBoostClassifier(n_estimators = 151)
+        return KNeighborsClassifier(n_neighbors = 23)
     elif classifier == 3:
-        return BaggingClassifier(n_estimators = 151)
+        return DecisionTreeClassifier(random_state=17, min_samples_split=2, max_depth=3, max_features=0.7)
     elif classifier == 4:
-        return ExtraTreesClassifier(n_estimators = 151)
-    elif classifier == 5:
-        return GradientBoostingClassifier(n_estimators = 151)
-    elif classifier == 6:
-        p1 = Pipeline([['clf1', RandomForestClassifier()]])
-        p2 = Pipeline([['clf2', AdaBoostClassifier()]])
-        return VotingClassifier(estimators=[("p1",p1), ("p2",p2)])
+        return RandomForestClassifier(random_state=56, n_jobs=-1, oob_score=True, max_depth=4, max_features=1, n_estimators=2)
+
+def getCombinedPredictions(X_train, y_train, X_test):
+    lr              = getClassifier(1)
+    lr.fit(X_train, y_train)
+    predictions_lr = lr.predict(X_test)
+
+    knc             = getClassifier(2)
+    knc.fit(X_train, y_train)
+    predictions_knc = knc.predict(X_test)
+
+    dtc             = getClassifier(3)
+    dtc.fit(X_train, y_train)
+    predictions_dtc = dtc.predict(X_test)
+
+    rfc             = getClassifier(4)
+    rfc.fit(X_train, y_train)
+    predictions_rfc = rfc.predict(X_test)
+
+    predictions     = (predictions_lr + predictions_knc + predictions_dtc + predictions_rfc)
+    return (predictions / 4).round()
 
 def impute_age(cols):
     Age = cols[0]

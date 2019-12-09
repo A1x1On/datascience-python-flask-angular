@@ -39,12 +39,11 @@ export interface PeriodicElement {
 })
 export class DialogScore {
   scoreValues: PeriodicElement[] = [
-    {position: 1, name: 'RandomForestClassifier'    , accuracy_score: 0.897, f1_score: 0.893, recall_score: 0.897, precision_score: 0.916},
-    {position: 2, name: 'AdaBoostClassifier'        , accuracy_score: 0.806, f1_score: 0.814, recall_score: 0.806, precision_score: 0.869},
-    {position: 3, name: 'BaggingClassifier'         , accuracy_score: 0.908, f1_score: 0.905, recall_score: 0.908, precision_score: 0.923},
-    {position: 4, name: 'ExtraTreesClassifier'      , accuracy_score: 0.918, f1_score: 0.915, recall_score: 0.918, precision_score: 0.929},
-    {position: 5, name: 'GradientBoostingClassifier', accuracy_score: 0.913, f1_score: 0.911, recall_score: 0.913, precision_score: 0.927},
-    {position: 6, name: 'VotingClassifier'          , accuracy_score: 0.801, f1_score: 0.744, recall_score: 0.801, precision_score: 0.710}
+    {position: 1, name: 'LogisticRegression'        , accuracy_score: 0.903, f1_score: 0.893, recall_score: 0.903, precision_score: 0.910},
+    {position: 2, name: 'KNeighborsClassifier'      , accuracy_score: 0.897, f1_score: 0.894, recall_score: 0.897, precision_score: 0.902},
+    {position: 3, name: 'DecisionTreeClassifier'    , accuracy_score: 0.862, f1_score: 0.835, recall_score: 0.862, precision_score: 0.827},
+    {position: 4, name: 'RandomForestClassifier'    , accuracy_score: 0.882, f1_score: 0.870, recall_score: 0.882, precision_score: 0.878},
+    {position: 5, name: 'CombinedModels'            , accuracy_score: 0.918, f1_score: 0.907, recall_score: 0.918, precision_score: 0.910}
   ];
 
   displayedColumns: string[] = ['position', 'name', 'accuracy_score', 'f1_score', 'recall_score', 'precision_score'];
@@ -93,15 +92,16 @@ export class HomeComponent {
     {value: 'credit', text: 'Credit'},
     {value: 'denial', text: 'Denial'}
   ];
-  patternValues : Select[] = [ //{value: 'titanic'     , text: 'Titanic (example)'},
-    {value: 'risk-company', text: 'Risks of Company'},
-    {value: 'custom'      , text: 'Custom'}
+  patternValues : Select[] = [
+    //{value: 'titanic'     , text: 'Titanic (example)'},
+    //{value: 'custom'      , text: 'Custom'}
+    {value: 'risk-company', text: 'Risks of Company'}
   ];
 
   constructor(private accountService : AccountService,
               private app            : AppGlobal,
               private http           : HttpClient,
-              public dialog: MatDialog,
+              public  dialog         : MatDialog,
               private sanitizer      : DomSanitizer,
               private toasterService : ToasterService) {
     this.trained      = '';
@@ -131,7 +131,6 @@ export class HomeComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
     });
   }
 
@@ -157,8 +156,7 @@ export class HomeComponent {
       a1a3 : null,
       f1f8 : null,
       f11  : null,
-      p2   : null,
-      risk : 'credit',
+      p2   : null
     };
   }
 
@@ -291,22 +289,23 @@ export class HomeComponent {
       if(!this.manualTest)
         return this.toasterService.pop('error', 'Test raw field is empty');
 
-      let i    = 21;
+      let i    = 20;
       testCSV  = 'R3;R4;R5;L1;L2;P1;A2;A4;1/A5;A6;F1;F2;F3;F4;R6;L3;1/A1;1/A3;1/F8;F11;P2;binaryrisk\n';
       this.manualTest.trim().replace(/\t/g, ';').split(/\n|;| /g).forEach((val, key) => {
         if(i == key){
-          testCSV = testCSV + val + '\r';
-          i       = i + 22;
+          testCSV = testCSV + val + ';';
+          testCSV = testCSV + 'binarynullval' + '\r';
+          i       = i + 21;
         }else{
           testCSV = testCSV + val + ';';
         }
       });
 
-      // 0,140197592;-0,0226437364;-0,508101417;0,228602326;0,183020413;0,481158687;1,50411276;4,30358762;0,207788298;2,13172161;-1,47191079;0,446974239;-1,12626183;0,0809678455;2,98762455;0,484131209;0,0172192235;0,617430453;0,0643489114;0,27437091;0,386199238;denial
-      // 0,213436197;-0,0243794166;-0,650289773;0,269583625;0,140657494;0;1,55079001;5,38566955;0,778022815;3,5004487;-1,97107788;0,527104441;-0,146319004;0,0540889814;2,42833972;0,348174582;0,0255711755;0,467825705;0,163773826;0,003627157;0,385536095;denial
-      // 0,1111753;-0,0372754165;-0,20092562;0,584013439;0,161838224;0;0,876979346;4,29972759;0,237475394;2,90707057;2,80146323;0,423083745;-1,33477781;0,0743883572;1,67920374;0,477485714;0,0196915726;0,518398768;0,022191915;0,0675880839;0,131637322;denial
-      // 0,0714368655;-0,0174959258;-1,05842664;0,195766945;0,179644157;0,0734283224;1,23844541;5,90047792;0,140307027;3,40319312;2,87639671;0,660487604;-0,289707268;0,0240661781;1,62022728;0,335765591;0,0184169756;0,483942503;0,115443348;0,177347304;0,272153792;denial
-      // 0,806161351;0,148945087;0,321058742;0,969247557;0,254500369;2,27369609;1,97468327;2,65686636;0;3,11178584;1,35541848;0,512085242;1,77157926;0,152011531;1,49048962;0,664724117;0;0,302104278;0,613016112;0,967213727;0,636554931;credit
+      // 0,140197592;-0,0226437364;-0,508101417;0,228602326;0,183020413;0,481158687;1,50411276;4,30358762;0,207788298;2,13172161;-1,47191079;0,446974239;-1,12626183;0,0809678455;2,98762455;0,484131209;0,0172192235;0,617430453;0,0643489114;0,27437091;0,386199238
+      // 0,213436197;-0,0243794166;-0,650289773;0,269583625;0,140657494;0;1,55079001;5,38566955;0,778022815;3,5004487;-1,97107788;0,527104441;-0,146319004;0,0540889814;2,42833972;0,348174582;0,0255711755;0,467825705;0,163773826;0,003627157;0,385536095
+      // 0,1111753;-0,0372754165;-0,20092562;0,584013439;0,161838224;0;0,876979346;4,29972759;0,237475394;2,90707057;2,80146323;0,423083745;-1,33477781;0,0743883572;1,67920374;0,477485714;0,0196915726;0,518398768;0,022191915;0,0675880839;0,131637322
+      // 0,0714368655;-0,0174959258;-1,05842664;0,195766945;0,179644157;0,0734283224;1,23844541;5,90047792;0,140307027;3,40319312;2,87639671;0,660487604;-0,289707268;0,0240661781;1,62022728;0,335765591;0,0184169756;0,483942503;0,115443348;0,177347304;0,272153792
+      // 0,806161351;0,148945087;0,321058742;0,969247557;0,254500369;2,27369609;1,97468327;2,65686636;0;3,11178584;1,35541848;0,512085242;1,77157926;0,152011531;1,49048962;0,664724117;0;0,302104278;0,613016112;0,967213727;0,636554931
     }
 
     if(testCSV){

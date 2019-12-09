@@ -15,12 +15,11 @@
     <div class="interface">
       <div class="models">
         <mat-radio-group class="models__group" name="radioButtons" aria-label="Select an option" [(ngModel)]="classifier">
-          <mat-radio-button class="models__group__btn" [value]="1">A random forest classifier (RandomForestClassifier)</mat-radio-button>
-          <mat-radio-button class="models__group__btn" [value]="2">An AdaBoost classifier (AdaBoostClassifier)</mat-radio-button>
-          <mat-radio-button class="models__group__btn" [value]="3">A Bagging classifier (BaggingClassifier)</mat-radio-button>
-          <mat-radio-button class="models__group__btn" [value]="4">An extra-trees classifier (ExtraTreesClassifier)</mat-radio-button>
-          <mat-radio-button class="models__group__btn" [value]="5">Gradient Boosting for classification (GradientBoostingClassifier)</mat-radio-button>
-          <mat-radio-button class="models__group__btn" [value]="6">Soft Voting/Majority Rule classifier for unfitted estimators (VotingClassifier)</mat-radio-button>
+          <mat-radio-button class="models__group__btn" [value]="1">Логит регрессия (LogisticRegression)</mat-radio-button>
+          <mat-radio-button class="models__group__btn" [value]="2">Метод ближайших соседей (KNeighborsClassifier)</mat-radio-button>
+          <mat-radio-button class="models__group__btn" [value]="3">Дерево решений (DecisionTreeClassifier)</mat-radio-button>
+          <mat-radio-button class="models__group__btn" [value]="4">Слчайный лес (RandomForestClassifier)</mat-radio-button>
+          <mat-radio-button class="models__group__btn" [value]="5">Включая все 4 модели <span class="sizeOff">(RandomForestClassifier + DecisionTreeClassifier + LogisticRegression + KNeighborsClassifier)</span></mat-radio-button>
         </mat-radio-group>
 
         <button mat-raised-button (click)="openDialog()" class="models__scoreBtn">Show Score table!</button>
@@ -80,14 +79,6 @@
       <mat-form-field class="asFields__input"><input matInput placeholder="1/F8" type = "number" [(ngModel)]="test.f1f8" title="Коэффициент соотношения заемных и собственных средств. Показывает, как сильно компания зависит от заемных средств"/></mat-form-field>
       <mat-form-field class="asFields__input"><input matInput placeholder="F11"  type = "number" [(ngModel)]="test.f11"  title="Коэффициент покрытия активов. Показывает способность компании погасить долги за счет имеющихся активов"/></mat-form-field>
       <mat-form-field class="asFields__input"><input matInput placeholder="P2"   type = "number" [(ngModel)]="test.p2"   title="Коэффициент обеспеченности собственными средствами. Показывает, какая доля оборотных активов, которые финансируются из собственных средств компании"/></mat-form-field>
-      <mat-form-field class="asFields__input asFields__select">
-        <mat-label>Binary Risk</mat-label>
-        <mat-select [(ngModel)]="test.risk">
-          <mat-option *ngFor="let p of riskValues" [value]="p.value">
-            {{p.text}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
     </div>
 
     <div class="asRaw" *ngIf="isRaw">
@@ -129,7 +120,6 @@
             <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент соотношения заемных и собственных средств"                 class="btnTip">1/F8</button></th>
             <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент покрытия активов"                                          class="btnTip">F11</button></th>
             <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip="Коэффициент обеспеченности собственными средствами"                    class="btnTip">P2</button></th>
-            <th><button mat-raised-button [matTooltipPosition]="'above'" matTooltip=""                                                                      class="btnTip">Binary <br *ngIf="!manualExpend"> Risk</button></th>
           </tr>
         </thead>
         <tbody>
